@@ -9,6 +9,7 @@ func _ready():
 
 func _process(delta):
 	$Sprite2D.look_at(get_global_mouse_position())
+	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
 
 func _physics_process(delta):
