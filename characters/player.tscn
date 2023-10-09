@@ -7,6 +7,7 @@
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
+collision_mask = 57
 script = ExtResource("1_o0g6r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -15,3 +16,6 @@ shape = SubResource("RectangleShape2D_xbh3p")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("1_0gt67")
+
+[node name="Node2D" type="Node2D" parent="Sprite2D"]
+unique_name_in_owner = true

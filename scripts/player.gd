@@ -5,6 +5,8 @@ extends CharacterBody2D
 @export var roll_duration : float = 0.2
 @onready var roll_speed : float = roll_distance / roll_duration
 
+@onready var sprite = $Sprite2D
+
 var move_vector : Vector2 = Vector2.ZERO
 var look_vector : Vector2 = Vector2.ZERO
 var roll_vector : Vector2 = Vector2.ZERO
@@ -15,10 +17,10 @@ func _ready():
 	pass
 
 func _process(delta):
-	$Sprite2D.look_at(get_global_mouse_position())
+	sprite.look_at(get_global_mouse_position())
 	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
-	look_vector = Vector2.from_angle($Sprite2D.rotation)
+	look_vector = Vector2.from_angle(sprite.rotation)
 	
 	if Input.is_action_just_pressed("fire"):
 		fire()
@@ -33,9 +35,13 @@ func _physics_process(delta):
 
 func roll():
 	roll_vector = move_vector
+	collision_mask = 1|6
+	if roll_vector == Vector2.ZERO:
+		roll_vector = look_vector
 	rolling = true
 	await get_tree().create_timer(roll_duration).timeout
 	rolling = false
+	collision_mask = 1|4|5|6
 
 func fire():
 	pass
