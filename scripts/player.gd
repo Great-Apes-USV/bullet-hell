@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Entity
 
 const MAX_CASH = 999
 
