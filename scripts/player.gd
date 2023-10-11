@@ -7,19 +7,26 @@ extends CharacterBody2D
 @onready var roll_speed : float = roll_distance / roll_duration
 
 @onready var sprite = $Sprite2D
+#@onready var weapon = Weapon.new(self)
 @onready var weapon = Shotgun.new(self)
 
 var move_vector : Vector2 = Vector2.ZERO
 var look_vector : Vector2 = Vector2.ZERO
 var roll_vector : Vector2 = Vector2.ZERO
 
-var rolling = false
+var rolling : bool = false
+var reloading : bool:
+	get: return weapon.reloading
+var needs_reload : bool:
+	get: return weapon.needs_reload
 
 func _ready():
-	weapon.range = 250
+#	weapon.fire_mode = Weapons.FireMode.FULL
+	weapon.bullet_range = 250
 	weapon.bullet_speed = 750
 	weapon.fire_rate = 3
 	weapon.magazine_size = 2
+	weapon.reload_speed = 0.75
 	weapon.current_magazine = weapon.magazine_size
 
 func _process(_delta):
@@ -35,7 +42,7 @@ func _process(_delta):
 		if Input.is_action_pressed("fire"):
 			fire()
 	
-	if Input.is_action_just_pressed("roll") and not rolling:
+	if Input.is_action_just_pressed("roll"):
 		roll()
 	
 	if Input.is_action_just_pressed("reload"):
@@ -48,22 +55,27 @@ func _physics_process(_delta):
 	move_and_slide()
 
 func roll():
+	if rolling:
+		return
+	rolling = true
+	weapon.interrupt_reload()
 	roll_vector = move_vector
 	collision_mask = 1|64
 	if roll_vector == Vector2.ZERO:
 		roll_vector = look_vector
-	rolling = true
 	await get_tree().create_timer(roll_duration).timeout
-	rolling = false
 	collision_mask = 1|16|32|64
+	rolling = false
 
 func fire():
-	if weapon.needs_reload and not weapon.reloading:
+	if needs_reload and not reloading and not rolling:
 		reload()
 		return
 	weapon.fire()
 
 func reload():
+	if rolling:
+		return
 	%TempReloadingLabel.show()
 	await weapon.reload()
 	%TempReloadingLabel.hide()

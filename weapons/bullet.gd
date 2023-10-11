@@ -3,7 +3,7 @@ extends RigidBody2D
 
 var speed : float
 var damage : int
-var range : float
+var bullet_range : float
 
 var distance_traveled : float
 
@@ -13,10 +13,10 @@ func _enter_tree():
 
 func _process(delta):
 	distance_traveled += delta * speed
-	if distance_traveled >= range:
+	if distance_traveled >= bullet_range:
 		queue_free()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	for node in get_colliding_bodies():
 #		if node is Enemy:
 #			node.take_damage(damage)

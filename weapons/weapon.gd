@@ -9,12 +9,14 @@ extends Resource
 @export var damage : int = 1
 @export var fire_rate : float = 10
 @export var bullet_speed : float = 1000
-@export var range : float = 2000
+@export var bullet_range : float = 2000
 @export var fire_mode : int = Weapons.FireMode.SEMI
 @export var magazine_size : int = 100
 @export var reload_speed : float = 2
 
 var current_magazine : int = magazine_size
+
+var reload_timer = Timer.new()
 
 var firing : bool = false
 var reloading : bool = false
@@ -23,20 +25,23 @@ var needs_reload : bool:
 
 func _init(new_player : Player = Player.new()):
 	player = new_player
+	# must wait for tree to finish setting up children
+	player.get_tree().root.add_child.call_deferred(reload_timer)
 
 func fire():
-	if not firing and current_magazine > 0 and not reloading:
-		firing = true
-		current_magazine -= 1
-		spawn_bullets()
-		await wait_fire_rate()
-		firing = false
+	if firing or current_magazine <= 0 or reloading:
+		return
+	firing = true
+	current_magazine -= 1
+	spawn_bullets()
+	await wait_fire_rate()
+	firing = false
 
 func create_bullet() -> Bullet:
 	var bullet = bullet_scene.instantiate() as Bullet
 	bullet.speed = bullet_speed
 	bullet.damage = damage
-	bullet.range = range
+	bullet.bullet_range = bullet_range
 	bullet.position = player.position
 	bullet.rotation = player.sprite.rotation
 	return bullet
@@ -51,6 +56,12 @@ func wait_fire_rate():
 
 func reload():
 	reloading = true
-	await player.get_tree().create_timer(reload_speed).timeout
-	current_magazine = magazine_size
+	reload_timer.start(reload_speed)
+	await reload_timer.timeout
+	if not reload_timer.is_stopped():
+		current_magazine = magazine_size
 	reloading = false
+
+func interrupt_reload():
+	reload_timer.stop()
+	reload_timer.timeout.emit()
