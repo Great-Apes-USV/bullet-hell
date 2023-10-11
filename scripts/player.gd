@@ -68,8 +68,10 @@ func roll():
 	rolling = false
 
 func fire():
-	if needs_reload and not reloading and not rolling:
+	if needs_reload and not reloading:
 		reload()
+		return
+	if rolling:
 		return
 	weapon.fire()
 
