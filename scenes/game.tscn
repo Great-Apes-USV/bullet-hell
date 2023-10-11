@@ -1,40 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bc5a2il7swow2"]
+[gd_scene load_steps=2 format=3 uid="uid://bc5a2il7swow2"]
 
 [ext_resource type="PackedScene" uid="uid://7l5x4jhsk0ht" path="res://characters/player.tscn" id="1_pghc2"]
 
-[sub_resource type="GDScript" id="GDScript_f3ga5"]
-script/source = "extends Node2D
-
-#Money system code:
-var bal = 0;
-const MAX_BAL = 999
-#returns bool true if balance > 0, and false if bal < 0 declining a purchase. 
-#Parameter: Amount you want to change. Use negative amts for purchases
-func changeBal(amt) -> bool:
-	bal += amt;
-	if(bal < 0):
-		bal -=amt
-		return false
-	if(bal >= MAX_BAL):
-		bal = MAX_BAL;
-	return true
-
-func getBal() -> int:
-	return bal;
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-"
-
 [node name="game" type="Node2D"]
-script = SubResource("GDScript_f3ga5")
 
 [node name="Player" parent="." instance=ExtResource("1_pghc2")]
 position = Vector2(530, 297)

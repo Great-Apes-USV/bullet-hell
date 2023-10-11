@@ -1,11 +1,13 @@
 extends CharacterBody2D
 
+const MAX_CASH = 999
+
 @export var speed : float = 200
 @export var roll_distance : float = 75
 @export var roll_duration : float = 0.2
 @onready var roll_speed : float = roll_distance / roll_duration
-@export var bal = 0;
-const MAX_BAL = 999
+
+@export var cash_balance = 0;
 
 @onready var sprite = $Sprite2D
 
@@ -18,8 +20,7 @@ var rolling = false
 func _ready():
 	pass
 
-@warning_ignore("unused_parameter")
-func _process(delta):
+func _process(_delta):
 	sprite.look_at(get_global_mouse_position())
 	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
@@ -30,8 +31,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("roll") and not rolling:
 		roll()
 
-@warning_ignore("unused_parameter")
-func _physics_process(delta):
+func _physics_process(_delta):
 	velocity = move_vector * speed
 	if rolling:
 		velocity = roll_vector * roll_speed
@@ -50,18 +50,11 @@ func roll():
 func fire():
 	pass
 
-
-#Money system code:
-#Returns bool true if balance > 0, and false if bal < 0 declining a purchase. 
-#Parameter: Amount you want to change. Use negative amts for purchases
-func changeBal(amt) -> bool:
-	bal += amt;
-	if(bal < 0):
-		bal -=amt
+func change_balance(amount) -> bool:
+	cash_balance += amount;
+	if(cash_balance < 0):
+		cash_balance -= amount
 		return false
-	if(bal >= MAX_BAL):
-		bal = MAX_BAL;
+	if(cash_balance >= MAX_CASH):
+		cash_balance = MAX_CASH;
 	return true
-
-func getBal() -> int:
-	return bal;
