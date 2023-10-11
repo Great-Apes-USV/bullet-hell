@@ -4,6 +4,8 @@ extends CharacterBody2D
 @export var roll_distance : float = 75
 @export var roll_duration : float = 0.2
 @onready var roll_speed : float = roll_distance / roll_duration
+@export var bal = 0;
+const MAX_BAL = 999
 
 @onready var sprite = $Sprite2D
 
@@ -16,6 +18,7 @@ var rolling = false
 func _ready():
 	pass
 
+@warning_ignore("unused_parameter")
 func _process(delta):
 	sprite.look_at(get_global_mouse_position())
 	# respects circular deadzone
@@ -27,6 +30,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("roll") and not rolling:
 		roll()
 
+@warning_ignore("unused_parameter")
 func _physics_process(delta):
 	velocity = move_vector * speed
 	if rolling:
@@ -45,3 +49,19 @@ func roll():
 
 func fire():
 	pass
+
+
+#Money system code:
+#Returns bool true if balance > 0, and false if bal < 0 declining a purchase. 
+#Parameter: Amount you want to change. Use negative amts for purchases
+func changeBal(amt) -> bool:
+	bal += amt;
+	if(bal < 0):
+		bal -=amt
+		return false
+	if(bal >= MAX_BAL):
+		bal = MAX_BAL;
+	return true
+
+func getBal() -> int:
+	return bal;
