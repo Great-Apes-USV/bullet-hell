@@ -1,10 +1,14 @@
 class_name Player
-extends CharacterBody2D
+extends Entity
+
+const MAX_CASH = 999
 
 @export var speed : float = 200
 @export var roll_distance : float = 75
 @export var roll_duration : float = 0.2
 @onready var roll_speed : float = roll_distance / roll_duration
+
+@export var cash_balance = 0;
 
 @onready var sprite = $Sprite2D
 #@onready var weapon = Weapon.new(self)
@@ -81,3 +85,12 @@ func reload():
 	%TempReloadingLabel.show()
 	await weapon.reload()
 	%TempReloadingLabel.hide()
+
+func change_balance(amount) -> bool:
+	cash_balance += amount;
+	if(cash_balance < 0):
+		cash_balance -= amount
+		return false
+	if(cash_balance >= MAX_CASH):
+		cash_balance = MAX_CASH;
+	return true
