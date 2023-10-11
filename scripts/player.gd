@@ -20,7 +20,7 @@ func _process(delta):
 	sprite.look_at(get_global_mouse_position())
 	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
-	look_vector = Vector2.from_angle(sprite.rotation)
+	look_vector = -Vector2.from_angle(sprite.rotation)
 	
 	if Input.is_action_just_pressed("fire"):
 		fire()
