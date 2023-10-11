@@ -1,10 +1,10 @@
-extends CharacterBody2D
+extends Entity
 
 @export var speed : float = 200
 @export var roll_distance : float = 75
 @export var roll_duration : float = 0.2
 @onready var roll_speed : float = roll_distance / roll_duration
-@export var max_health : int = 100
+
 
 @onready var sprite = $Sprite2D
 
@@ -13,7 +13,7 @@ var look_vector : Vector2 = Vector2.ZERO
 var roll_vector : Vector2 = Vector2.ZERO
 
 var rolling = false
-var health : int = max_health
+
 
 func _ready():
 	pass
@@ -47,18 +47,4 @@ func roll():
 
 func fire():
 	pass
-	
-	
-	
-func take_damage(amount: int):
-	health -= amount 
-	if health <= 0:
-		die()
-	if health > max_health:
-		health = max_health
-		
-func die():
-	pass
-	
-	
 	
