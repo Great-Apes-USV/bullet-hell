@@ -2,6 +2,8 @@ class_name Weapon
 extends Resource
 
 @export var name : String
+@export var type : Weapons.WeaponType:
+	get: return _get_type()
 @export var player : Player
 
 @export var bullet_scene : PackedScene = preload("res://weapons/bullet.tscn")
@@ -23,10 +25,32 @@ var reloading : bool = false
 var needs_reload : bool:
 	get: return current_magazine <= 0
 
-func _init(new_player : Player = Player.new()):
+func _init(new_player : Player = Player.new(), properties : Dictionary = {}):
 	player = new_player
+	set_props_from_dict(properties, true)
 	# must wait for tree to finish setting up children
 	player.get_tree().root.add_child.call_deferred(reload_timer)
+
+func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = false):
+	for key in properties:
+		var value = properties[key]
+		match key:
+			"damage":
+				damage = value
+			"fire_rate":
+				fire_rate = value
+			"bullet_speed":
+				bullet_speed = value
+			"bullet_range":
+				bullet_range = value
+			"fire_mode":
+				fire_mode = value
+			"magazine_size":
+				magazine_size = value
+				if is_new_weapon:
+					current_magazine = magazine_size
+			"reload_speed":
+				reload_speed = value
 
 func fire():
 	if firing or current_magazine <= 0 or reloading:
@@ -65,3 +89,6 @@ func reload():
 func interrupt_reload():
 	reload_timer.stop()
 	reload_timer.timeout.emit()
+
+func _get_type() -> Weapons.WeaponType:
+	return Weapons.WeaponType.ANY

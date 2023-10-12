@@ -4,15 +4,17 @@ extends Entity
 const MAX_CASH = 999
 
 @export var speed : float = 200
-@export var roll_distance : float = 75
-@export var roll_duration : float = 0.2
+@export var roll_distance : float = 150
+@export var roll_duration : float = 0.3
 @onready var roll_speed : float = roll_distance / roll_duration
 
-@export var cash_balance = 0;
+@export var weapon_type : Weapons.WeaponType = Weapons.WeaponType.ANY
 
-@onready var sprite = $Sprite2D
-#@onready var weapon = Weapon.new(self)
-@onready var weapon = Shotgun.new(self)
+@export var cash_balance : int = 0;
+
+@onready var sprite : Sprite2D = $Sprite2D
+
+var weapon : Weapon
 
 var move_vector : Vector2 = Vector2.ZERO
 var look_vector : Vector2 = Vector2.ZERO
@@ -25,13 +27,15 @@ var needs_reload : bool:
 	get: return weapon.needs_reload
 
 func _ready():
-#	weapon.fire_mode = Weapons.FireMode.FULL
-	weapon.bullet_range = 250
-	weapon.bullet_speed = 750
-	weapon.fire_rate = 3
-	weapon.magazine_size = 2
-	weapon.reload_speed = 0.75
-	weapon.current_magazine = weapon.magazine_size
+	var weapon_properties : Dictionary = {
+		bullet_range = 250,
+		bullet_speed = 750,
+		fire_rate = 3,
+		magazine_size = 2,
+		reload_speed = 0.75
+	}
+	weapon = Weapons.weapon_from_type(weapon_type).new(self, weapon_properties)
+	print(weapon.fire_mode)
 
 func _process(_delta):
 	sprite.look_at(get_global_mouse_position())

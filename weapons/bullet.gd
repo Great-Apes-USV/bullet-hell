@@ -1,6 +1,8 @@
 class_name Bullet
 extends RigidBody2D
 
+const MAX_LIFETIME : int = 10
+
 var speed : float
 var damage : int
 var bullet_range : float
@@ -9,7 +11,7 @@ var distance_traveled : float
 
 func _enter_tree():
 	linear_velocity = Vector2.from_angle(rotation) * speed
-	die_after_seconds(10)
+	die_after_seconds(MAX_LIFETIME)
 
 func _process(delta):
 	distance_traveled += delta * speed
@@ -17,10 +19,10 @@ func _process(delta):
 		queue_free()
 
 func _physics_process(_delta):
-	for node in get_colliding_bodies():
-#		if node is Enemy:
-#			node.take_damage(damage)
-		if node is StaticBody2D:
+	for body in get_colliding_bodies():
+#		if body is Enemy:
+#			body.take_damage(damage)
+		if body is StaticBody2D:
 			queue_free()
 	pass
 
