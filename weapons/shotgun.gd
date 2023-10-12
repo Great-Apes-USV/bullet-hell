@@ -16,4 +16,7 @@ func spawn_bullets():
 		var bullet_rotation : float = lerp(spread_angle * 0.5, -spread_angle * 0.5, float(i) / (bullet_count - 1))
 		var bullet = create_bullet()
 		bullet.rotation += deg_to_rad(bullet_rotation)
-		player.get_tree().root.add_child(bullet)
+		bullets_node.add_child(bullet)
+
+func _get_type() -> Weapons.WeaponType:
+	return Weapons.WeaponType.SHOTGUN

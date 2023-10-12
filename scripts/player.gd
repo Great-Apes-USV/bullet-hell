@@ -3,8 +3,8 @@ extends Entity
 
 const MAX_CASH = 999
 
-@export var speed : float = 200
-@export var roll_distance : float = 150
+@export var speed : float = 300
+@export var roll_distance : float = 200
 @export var roll_duration : float = 0.3
 @onready var roll_speed : float = roll_distance / roll_duration
 
@@ -35,13 +35,15 @@ func _ready():
 		reload_speed = 0.75
 	}
 	weapon = Weapons.weapon_from_type(weapon_type).new(self, weapon_properties)
-	print(weapon.fire_mode)
 
 func _process(_delta):
 	sprite.look_at(get_global_mouse_position())
 	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
 	look_vector = -Vector2.from_angle(sprite.rotation)
+	
+	%TempPlayerHealthLabel.text = "%d HP" % health
+	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [weapon.current_magazine, weapon.magazine_size]
 	
 	if weapon.fire_mode == Weapons.FireMode.SEMI:
 		if Input.is_action_just_pressed("fire"):

@@ -18,7 +18,8 @@ extends Resource
 
 var current_magazine : int = magazine_size
 
-var reload_timer = Timer.new()
+var reload_timer : Timer = Timer.new()
+var bullets_node : Node2D
 
 var firing : bool = false
 var reloading : bool = false
@@ -30,6 +31,7 @@ func _init(new_player : Player = Player.new(), properties : Dictionary = {}):
 	set_props_from_dict(properties, true)
 	# must wait for tree to finish setting up children
 	player.get_tree().root.add_child.call_deferred(reload_timer)
+	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
 
 func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = false):
 	for key in properties:
@@ -72,7 +74,7 @@ func create_bullet() -> Bullet:
 
 func spawn_bullets():
 	var bullet = create_bullet()
-	player.get_tree().root.add_child(bullet)
+	bullets_node.add_child(bullet)
 
 func wait_fire_rate():
 	# reciprocal of fire_rate = seconds per bullet

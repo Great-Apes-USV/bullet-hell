@@ -3,13 +3,17 @@ extends RigidBody2D
 
 const MAX_LIFETIME : int = 10
 
+static var bullet_id = 0
+
 var speed : float
 var damage : int
 var bullet_range : float
 
-var distance_traveled : float
+var distance_traveled : float = 0
 
 func _enter_tree():
+	name = "Bullet_%d" % bullet_id
+	bullet_id += 1 
 	linear_velocity = Vector2.from_angle(rotation) * speed
 	die_after_seconds(MAX_LIFETIME)
 
