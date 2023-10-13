@@ -36,8 +36,8 @@ var needs_reload : bool:
 	get: return current_weapon.needs_reload
 
 func _ready():
-	add_preset_weapon("full_pistol")
-	add_preset_weapon("full_extended_shotgun")
+	add_preset_weapon("full_rapid_lightweight_pistol")
+	add_preset_weapon("tight_magnum_extended_shotgun")
 
 func _process(_delta):
 	sprite.look_at(get_global_mouse_position())
@@ -66,10 +66,6 @@ func _process(_delta):
 	
 	if autoreload and needs_reload:
 		reload()
-	
-	# testing
-	if Input.is_action_just_pressed("ui_text_backspace"):
-		add_weapon(Weapon.new(self))
 
 func _physics_process(_delta):
 	velocity = move_vector * speed
@@ -102,6 +98,7 @@ func fire():
 func reload():
 	if rolling or current_weapon.current_ammo == current_weapon.max_ammo or reloading:
 		return
+	print(current_weapon.preset_name)
 	%TempReloadingLabel.show()
 	await current_weapon.reload()
 	%TempReloadingLabel.hide()

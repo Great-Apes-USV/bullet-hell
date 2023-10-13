@@ -16,6 +16,7 @@ extends Resource
 @export var max_ammo : int = 100
 @export var reload_speed : float = 2
 
+var preset_name : String = ""
 var current_ammo : int = max_ammo
 
 var reload_timer : Timer = Timer.new()
