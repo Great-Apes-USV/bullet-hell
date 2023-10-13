@@ -13,10 +13,10 @@ extends Resource
 @export var bullet_speed : float = 1000
 @export var bullet_range : float = 2000
 @export var fire_mode : int = Weapons.FireMode.SEMI
-@export var magazine_size : int = 100
+@export var max_ammo : int = 100
 @export var reload_speed : float = 2
 
-var current_magazine : int = magazine_size
+var current_ammo : int = max_ammo
 
 var reload_timer : Timer = Timer.new()
 var bullets_node : Node2D
@@ -24,7 +24,7 @@ var bullets_node : Node2D
 var firing : bool = false
 var reloading : bool = false
 var needs_reload : bool:
-	get: return current_magazine <= 0
+	get: return current_ammo <= 0
 
 func _init(new_player : Player = Player.new(), properties : Dictionary = {}):
 	player = new_player
@@ -47,18 +47,18 @@ func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = fa
 				bullet_range = value
 			"fire_mode":
 				fire_mode = value
-			"magazine_size":
-				magazine_size = value
+			"max_ammo":
+				max_ammo = value
 				if is_new_weapon:
-					current_magazine = magazine_size
+					current_ammo = max_ammo
 			"reload_speed":
 				reload_speed = value
 
 func fire():
-	if firing or current_magazine <= 0 or reloading:
+	if firing or current_ammo <= 0 or reloading:
 		return
 	firing = true
-	current_magazine -= 1
+	current_ammo -= 1
 	spawn_bullets()
 	await wait_fire_rate()
 	firing = false
@@ -85,7 +85,7 @@ func reload():
 	reload_timer.start(reload_speed)
 	await reload_timer.timeout
 	if not reload_timer.is_stopped():
-		current_magazine = magazine_size
+		current_ammo = max_ammo
 	reloading = false
 
 func interrupt_reload():

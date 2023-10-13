@@ -2,19 +2,28 @@ class_name Player
 extends Entity
 
 const MAX_CASH = 999
+const MAX_WEAPONS = 2
 
 @export var speed : float = 300
 @export var roll_distance : float = 200
 @export var roll_duration : float = 0.3
 @onready var roll_speed : float = roll_distance / roll_duration
 
-@export var weapon_type : Weapons.WeaponType = Weapons.WeaponType.ANY
+@export var autoreload : bool = true
 
 @export var cash_balance : int = 0;
 
 @onready var sprite : Sprite2D = $Sprite2D
 
-var weapon : Weapon
+var weapons : Array[Weapon] = []
+var current_weapon_num : int = 0:
+	set(value):
+		if value >= MAX_WEAPONS or value >= weapons.size():
+			current_weapon_num = 0
+		else:
+			current_weapon_num = value
+var current_weapon : Weapon:
+	get: return weapons[current_weapon_num]
 
 var move_vector : Vector2 = Vector2.ZERO
 var look_vector : Vector2 = Vector2.ZERO
@@ -22,19 +31,13 @@ var roll_vector : Vector2 = Vector2.ZERO
 
 var rolling : bool = false
 var reloading : bool:
-	get: return weapon.reloading
+	get: return current_weapon.reloading
 var needs_reload : bool:
-	get: return weapon.needs_reload
+	get: return current_weapon.needs_reload
 
 func _ready():
-	var weapon_properties : Dictionary = {
-		bullet_range = 250,
-		bullet_speed = 750,
-		fire_rate = 3,
-		magazine_size = 2,
-		reload_speed = 0.75
-	}
-	weapon = Weapons.weapon_from_type(weapon_type).new(self, weapon_properties)
+	add_preset_weapon("full_pistol")
+	add_preset_weapon("full_extended_shotgun")
 
 func _process(_delta):
 	sprite.look_at(get_global_mouse_position())
@@ -43,12 +46,12 @@ func _process(_delta):
 	look_vector = -Vector2.from_angle(sprite.rotation)
 	
 	%TempPlayerHealthLabel.text = "%d HP" % health
-	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [weapon.current_magazine, weapon.magazine_size]
+	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [current_weapon.current_ammo, current_weapon.max_ammo]
 	
-	if weapon.fire_mode == Weapons.FireMode.SEMI:
+	if current_weapon.fire_mode == Weapons.FireMode.SEMI:
 		if Input.is_action_just_pressed("fire"):
 			fire()
-	elif weapon.fire_mode == Weapons.FireMode.FULL:
+	elif current_weapon.fire_mode == Weapons.FireMode.FULL:
 		if Input.is_action_pressed("fire"):
 			fire()
 	
@@ -57,6 +60,16 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("reload"):
 		reload()
+	
+	if Input.is_action_just_pressed("weapon-swap"):
+		swap_weapon()
+	
+	if autoreload and needs_reload:
+		reload()
+	
+	# testing
+	if Input.is_action_just_pressed("ui_text_backspace"):
+		add_weapon(Weapon.new(self))
 
 func _physics_process(_delta):
 	velocity = move_vector * speed
@@ -67,8 +80,9 @@ func _physics_process(_delta):
 func roll():
 	if rolling:
 		return
+	
 	rolling = true
-	weapon.interrupt_reload()
+	current_weapon.interrupt_reload()
 	roll_vector = move_vector
 	collision_mask = 1|64
 	if roll_vector == Vector2.ZERO:
@@ -83,14 +97,28 @@ func fire():
 		return
 	if rolling:
 		return
-	weapon.fire()
+	current_weapon.fire()
 
 func reload():
-	if rolling:
+	if rolling or current_weapon.current_ammo == current_weapon.max_ammo or reloading:
 		return
 	%TempReloadingLabel.show()
-	await weapon.reload()
+	await current_weapon.reload()
 	%TempReloadingLabel.hide()
+
+func add_preset_weapon(new_weapon_name : String):
+	add_weapon(Weapons.new_preset_weapon(self, new_weapon_name))
+
+func add_weapon(new_weapon : Weapon):
+	if weapons.size() < MAX_WEAPONS:
+		weapons.push_back(new_weapon)
+		current_weapon_num += 1
+	else:
+		weapons[current_weapon_num] = new_weapon
+
+func swap_weapon():
+	current_weapon.interrupt_reload()
+	current_weapon_num += 1
 
 func change_balance(amount) -> bool:
 	cash_balance += amount;

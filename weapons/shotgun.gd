@@ -5,6 +5,14 @@ extends Weapon
 @export var bullet_count : int = 5
 
 func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = false):
+	if properties == {}:
+		properties = {
+			bullet_range = 250,
+			bullet_speed = 750,
+			fire_rate = 3,
+			max_ammo = 2,
+			reload_speed = 0.75
+		}
 	super.set_props_from_dict(properties, is_new_weapon)
 	if properties.has("spread_angle"):
 		spread_angle = properties.spread_angle
