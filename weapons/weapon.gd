@@ -1,59 +1,46 @@
 class_name Weapon
 extends Resource
 
+
 @export var name : String
-@export var type : Weapons.WeaponType:
-	get: return _get_type()
+@export var type : Weapons.WeaponType = _get_type()
 @export var player : Player
+@export var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
+@export var properties = {
+	damage = 1,
+	fire_rate = 10,
+	bullet_speed = 1000,
+	bullet_range = 2000,
+	fire_mode = Weapons.FireMode.SEMI,
+	max_ammo = 100,
+	reload_speed = 2,
+	reload_delay = 0.15,
+}
 
-@export var bullet_scene : PackedScene = preload("res://weapons/bullet.tscn")
-
-@export var damage : int = 1
-@export var fire_rate : float = 10
-@export var bullet_speed : float = 1000
-@export var bullet_range : float = 2000
-@export var fire_mode : int = Weapons.FireMode.SEMI
-@export var max_ammo : int = 100
-@export var reload_speed : float = 2
-
-var preset_name : String = ""
-var current_ammo : int = max_ammo
-
-var reload_timer : Timer = Timer.new()
+var preset_name := ""
+var current_ammo : int = properties.max_ammo
+var reload_timer := Timer.new()
 var bullets_node : Node2D
-
-var firing : bool = false
-var reloading : bool = false
+var firing := false
+var reloading := false
+var delaying_reload := false
 var no_ammo : bool:
 	get: return current_ammo <= 0
 
-func _init(new_player : Player = Player.new(), properties : Dictionary = {}):
+
+func _init(new_player := Player.new(), new_properties := {}):
 	player = new_player
-	set_props_from_dict(properties, true)
+	set_props_from_dict(new_properties)
 	# must wait for tree to finish setting up children
 	player.get_tree().root.add_child.call_deferred(reload_timer)
 	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
 
-func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = false):
-	for key in properties:
-		var value = properties[key]
-		match key:
-			"damage":
-				damage = value
-			"fire_rate":
-				fire_rate = value
-			"bullet_speed":
-				bullet_speed = value
-			"bullet_range":
-				bullet_range = value
-			"fire_mode":
-				fire_mode = value
-			"max_ammo":
-				max_ammo = value
-				if is_new_weapon:
-					current_ammo = max_ammo
-			"reload_speed":
-				reload_speed = value
+
+func set_props_from_dict(new_properties := {}):
+	for key in new_properties:
+		set_prop(key, new_properties[key])
+	current_ammo = properties.max_ammo
+
 
 func fire():
 	if firing or current_ammo <= 0 or reloading:
@@ -63,35 +50,59 @@ func fire():
 	spawn_bullets()
 	await wait_fire_rate()
 	firing = false
+	begin_reload_delay()
+
 
 func create_bullet() -> Bullet:
-	var bullet = bullet_scene.instantiate() as Bullet
-	bullet.speed = bullet_speed
-	bullet.damage = damage
-	bullet.bullet_range = bullet_range
+	var bullet = BulletNode.instantiate() as Bullet
+	bullet.speed = properties.bullet_speed
+	bullet.damage = properties.damage
+	bullet.bullet_range = properties.bullet_range
 	bullet.position = player.position - player.look_vector.normalized() * player.sprite.texture.get_width()
 	bullet.rotation = player.sprite.rotation
 	return bullet
+
 
 func spawn_bullets():
 	var bullet = create_bullet()
 	bullets_node.add_child(bullet)
 
+
 func wait_fire_rate():
 	# reciprocal of fire_rate = seconds per bullet
-	await player.get_tree().create_timer(1 / fire_rate).timeout
+	await player.get_tree().create_timer(1.0 / properties.fire_rate).timeout
+
 
 func reload():
+	if delaying_reload:
+		return
 	reloading = true
-	reload_timer.start(reload_speed)
+	reload_timer.start(properties.reload_speed)
 	await reload_timer.timeout
 	if not reload_timer.is_stopped():
-		current_ammo = max_ammo
+		current_ammo = properties.max_ammo
 	reloading = false
+
 
 func interrupt_reload():
 	reload_timer.stop()
 	reload_timer.timeout.emit()
+
+
+func begin_reload_delay():
+	delaying_reload = true
+	await player.get_tree().create_timer(properties.reload_delay).timeout
+	delaying_reload = false
+
+
+func get_prop(property_name : String) -> Variant:
+	return properties[property_name]
+
+
+func set_prop(property_name : String, value : Variant):
+	if properties.has(property_name):
+		properties[property_name] = value
+
 
 func _get_type() -> Weapons.WeaponType:
 	return Weapons.WeaponType.ANY
