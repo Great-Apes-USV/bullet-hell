@@ -27,6 +27,8 @@ func new_preset_weapon(player : Player, preset_name : String = "") -> Weapon:
 	for keyword in preset_strings:
 		if keyword == "tight" and new_weapon is Shotgun:
 			new_weapon.spread_angle *= 0.5
+		if keyword == "slug" and new_weapon is Shotgun:
+			new_weapon.slug = true
 		match keyword:
 			"full":
 				new_weapon.fire_mode = FireMode.FULL

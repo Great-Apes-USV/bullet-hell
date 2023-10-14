@@ -32,12 +32,10 @@ var roll_vector : Vector2 = Vector2.ZERO
 var rolling : bool = false
 var reloading : bool:
 	get: return current_weapon.reloading
-var needs_reload : bool:
-	get: return current_weapon.needs_reload
 
 func _ready():
 	add_preset_weapon("full_rapid_lightweight_pistol")
-	add_preset_weapon("tight_magnum_extended_shotgun")
+	add_preset_weapon("full_magnum_slug_shotgun")
 
 func _process(_delta):
 	sprite.look_at(get_global_mouse_position())
@@ -64,7 +62,7 @@ func _process(_delta):
 	if Input.is_action_just_pressed("weapon-swap"):
 		swap_weapon()
 	
-	if autoreload and needs_reload:
+	if autoreload and current_weapon.no_ammo:
 		reload()
 
 func _physics_process(_delta):
@@ -88,7 +86,7 @@ func roll():
 	rolling = false
 
 func fire():
-	if needs_reload and not reloading:
+	if current_weapon.no_ammo and not reloading:
 		reload()
 		return
 	if rolling:
@@ -96,9 +94,8 @@ func fire():
 	current_weapon.fire()
 
 func reload():
-	if rolling or current_weapon.current_ammo == current_weapon.max_ammo or reloading:
+	if rolling or current_weapon.current_ammo == current_weapon.max_ammo or reloading or current_weapon.firing:
 		return
-	print(current_weapon.preset_name)
 	%TempReloadingLabel.show()
 	await current_weapon.reload()
 	%TempReloadingLabel.hide()

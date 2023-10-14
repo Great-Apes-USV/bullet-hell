@@ -3,6 +3,7 @@ extends Weapon
 
 @export var spread_angle : float = 30
 @export var bullet_count : int = 5
+@export var slug : bool = false
 
 func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = false):
 	if properties == {}:
@@ -20,6 +21,11 @@ func set_props_from_dict(properties : Dictionary = {}, is_new_weapon : bool = fa
 		bullet_count = properties.bullet_count
 
 func spawn_bullets():
+	if slug:
+		var bullet = create_bullet()
+		bullet.rescale(Vector2(2, 1))
+		bullets_node.add_child(bullet)
+		return
 	for i in range(bullet_count):
 		var bullet_rotation : float = lerp(spread_angle * 0.5, -spread_angle * 0.5, float(i) / (bullet_count - 1))
 		var bullet = create_bullet()

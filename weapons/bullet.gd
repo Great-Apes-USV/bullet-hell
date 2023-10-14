@@ -28,8 +28,12 @@ func _physics_process(_delta):
 #			body.take_damage(damage)
 		if body is StaticBody2D:
 			queue_free()
-	pass
 
 func die_after_seconds(seconds : float):
 	await get_tree().create_timer(seconds).timeout
 	queue_free()
+
+func rescale(ratio : Vector2):
+	$Sprite2D.scale *= ratio
+	$MeshInstance2D.scale *= ratio
+	$CollisionShape2D.scale *= ratio

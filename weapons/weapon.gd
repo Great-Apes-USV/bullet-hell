@@ -24,7 +24,7 @@ var bullets_node : Node2D
 
 var firing : bool = false
 var reloading : bool = false
-var needs_reload : bool:
+var no_ammo : bool:
 	get: return current_ammo <= 0
 
 func _init(new_player : Player = Player.new(), properties : Dictionary = {}):
@@ -69,7 +69,7 @@ func create_bullet() -> Bullet:
 	bullet.speed = bullet_speed
 	bullet.damage = damage
 	bullet.bullet_range = bullet_range
-	bullet.position = player.position
+	bullet.position = player.position - player.look_vector.normalized() * player.sprite.texture.get_width()
 	bullet.rotation = player.sprite.rotation
 	return bullet
 
