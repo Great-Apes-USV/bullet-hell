@@ -15,6 +15,7 @@ extends Resource
 	max_ammo = 100,
 	reload_speed = 2,
 	reload_delay = 0.15,
+	piercing = false,
 }
 
 var preset_name := ""
