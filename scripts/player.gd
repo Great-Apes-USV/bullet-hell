@@ -74,7 +74,7 @@ func roll():
 	rolling = true
 	current_weapon.interrupt_reload()
 	collision_mask = 1|64
-	roll_vector = look_vector if roll_vector == Vector2.ZERO else move_vector
+	roll_vector = look_vector if move_vector == Vector2.ZERO else move_vector
 	await get_tree().create_timer(roll_duration).timeout
 	collision_mask = 1|16|32|64
 	rolling = false
