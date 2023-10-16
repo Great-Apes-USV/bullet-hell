@@ -1,24 +1,14 @@
 class_name Weapon
-extends Resource
+extends DynamicResource
 
 
 @export var name : String
 @export var type : Weapons.WeaponType = _get_type()
 @export var player : Player
 @export var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
-@export var properties = {
-	damage = 1,
-	fire_rate = 10,
-	bullet_speed = 1000,
-	bullet_range = 2000,
-	fire_mode = Weapons.FireMode.SEMI,
-	max_ammo = 100,
-	reload_speed = 2,
-	reload_delay = 0.15,
-}
 
 var preset_name := ""
-var current_ammo : int = properties.max_ammo
+var current_ammo : int
 var reload_timer := Timer.new()
 var bullets_node : Node2D
 var firing := false
@@ -31,6 +21,16 @@ var full_ammo : bool:
 
 
 func _init(new_player := Player.new(), new_properties := {}):
+	add_default_properties({
+			damage = 1,
+			fire_rate = 10,
+			bullet_speed = 1000,
+			bullet_range = 2000,
+			fire_mode = Weapons.FireMode.SEMI,
+			max_ammo = 100,
+			reload_speed = 2,
+			reload_delay = 0.15,
+	})
 	player = new_player
 	set_props_from_dict(new_properties)
 	# must wait for tree to finish setting up children
@@ -39,8 +39,7 @@ func _init(new_player := Player.new(), new_properties := {}):
 
 
 func set_props_from_dict(new_properties := {}):
-	for key in new_properties:
-		set_prop(key, new_properties[key])
+	super.set_props_from_dict(new_properties)
 	current_ammo = properties.max_ammo
 
 
@@ -95,28 +94,6 @@ func begin_reload_delay():
 	delaying_reload = true
 	await player.get_tree().create_timer(properties.reload_delay).timeout
 	delaying_reload = false
-
-
-func get_prop(property_name : String) -> Variant:
-	return properties[property_name]
-
-
-func set_prop(property_name : String, value : Variant):
-	if properties.has(property_name):
-		properties[property_name] = value
-
-
-func _get(property: StringName) -> Variant:
-	if properties.has(property):
-		return properties[property]
-	return super._get(property)
-	
-
-func _set(property: StringName, value: Variant) -> bool:
-	if properties.has(property):
-		properties[property] = value
-		return true
-	return super._set(property, value)
 
 
 func _get_type() -> Weapons.WeaponType:
