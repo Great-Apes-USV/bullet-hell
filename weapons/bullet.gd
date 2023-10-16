@@ -22,7 +22,7 @@ func _enter_tree():
 func _process(delta):
 	distance_traveled += delta * speed
 	if distance_traveled >= bullet_range:
-		queue_free()
+		die()
 
 
 func _physics_process(_delta):
@@ -30,15 +30,19 @@ func _physics_process(_delta):
 #		if body is Enemy:
 #			body.take_damage(damage)
 		if body is StaticBody2D:
-			queue_free()
+			die()
 
 
 func die_after_seconds(seconds : float):
 	await get_tree().create_timer(seconds).timeout
-	queue_free()
+	die()
 
 
 func rescale(ratio : Vector2):
 	$Sprite2D.scale *= ratio
 	$MeshInstance2D.scale *= ratio
 	$CollisionShape2D.scale *= ratio
+
+
+func die(): # for actions when freeing
+	queue_free()
