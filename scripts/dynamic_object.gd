@@ -1,31 +1,22 @@
-@tool
-class_name DynamicResource
-extends Resource
+class_name DynamicObject
+extends Object
 
 
+@export var override_default_set = true
 @export var properties := {}
 
 
-func assign_default_properties():
+func _assign_default_properties():
 	properties = {}
 
 
-func add_default_properties(default_properties := {}):
+func _add_default_properties(default_properties := {}):
 	properties.merge(default_properties)
 
 
 func set_props_from_dict(new_properties := {}):
 	for key in new_properties:
-		set_prop(key, new_properties[key])
-
-
-func get_prop(property_name : String) -> Variant:
-	return properties[property_name]
-
-
-func set_prop(property_name : String, value : Variant):
-	if properties.has(property_name):
-		properties[property_name] = value
+		_set(key, new_properties[key])
 
 
 func _get(property: StringName) -> Variant:
@@ -33,8 +24,9 @@ func _get(property: StringName) -> Variant:
 		return properties[property]
 	return null
 
+
 func _set(property: StringName, value: Variant) -> bool:
 	if properties.has(property):
 		properties[property] = value
-		return true
+		return override_default_set
 	return false

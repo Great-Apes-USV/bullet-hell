@@ -3,7 +3,7 @@ extends Weapon
 
 
 func _init(new_player := Player.new(), new_properties := {}):
-	add_default_properties({
+	_add_default_properties({
 			bullet_range = 250,
 			bullet_speed = 750,
 			fire_rate = 3,

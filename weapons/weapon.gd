@@ -1,5 +1,5 @@
 class_name Weapon
-extends DynamicResource
+extends DynamicObject
 
 
 @export var name : String
@@ -21,7 +21,7 @@ var full_ammo : bool:
 
 
 func _init(new_player := Player.new(), new_properties := {}):
-	add_default_properties({
+	_add_default_properties({
 			damage = 1,
 			fire_rate = 10,
 			bullet_speed = 1000,
