@@ -1,11 +1,9 @@
 class_name Weapon
 extends DynamicObject
 
-
-@export var name : String
-@export var type : Weapons.WeaponType = _get_type()
-@export var player : Player
-@export var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
+var weapon_type : Weapons.WeaponType = _get_type()
+var player : Player
+var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
 
 var preset_name := ""
 var current_ammo : int

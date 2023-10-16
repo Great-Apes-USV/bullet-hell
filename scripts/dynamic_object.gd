@@ -2,8 +2,8 @@ class_name DynamicObject
 extends RefCounted
 
 
-@export var override_default_set = true
-@export var properties := {}
+var override_default_set = true
+var properties := {}
 
 
 func set_props_from_dict(new_properties := {}):
