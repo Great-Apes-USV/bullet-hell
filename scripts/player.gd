@@ -5,7 +5,7 @@ extends Entity
 const MAX_CASH : int = 999
 const MAX_WEAPONS : int = 2
 
-@export var speed : float = 300
+
 @export var roll_distance : float = 200
 @export var roll_duration := 0.3
 @export var autoreload := true
