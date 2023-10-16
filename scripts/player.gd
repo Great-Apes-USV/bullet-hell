@@ -1,24 +1,37 @@
+class_name Player
 extends Entity
 
-const MAX_CASH = 999
 
-@export var speed : float = 200
-@export var roll_distance : float = 75
-@export var roll_duration : float = 0.2
+const MAX_CASH : int = 999
+const MAX_WEAPONS : int = 2
+
+@export var speed : float = 300
+@export var roll_distance : float = 200
+@export var roll_duration := 0.3
+@export var autoreload := true
+@export var cash_balance : int = 0;
+
+var move_vector := Vector2.ZERO
+var look_vector := Vector2.ZERO
+var roll_vector := Vector2.ZERO
+var rolling := false
+var weapons : Array[Weapon] = []
+var current_weapon_num : int = 0:
+	set(value):
+		current_weapon_num = 0 if value >= MAX_WEAPONS or value >= weapons.size() else value
+var current_weapon : Weapon:
+	get: return weapons[current_weapon_num]
+var reloading : bool:
+	get: return current_weapon.reloading
+
+@onready var sprite : Sprite2D = $Sprite2D
 @onready var roll_speed : float = roll_distance / roll_duration
 
-@export var cash_balance = 0;
-
-@onready var sprite = $Sprite2D
-
-var move_vector : Vector2 = Vector2.ZERO
-var look_vector : Vector2 = Vector2.ZERO
-var roll_vector : Vector2 = Vector2.ZERO
-
-var rolling = false
 
 func _ready():
-	pass
+	add_preset_weapon("full_rapid_lightweight_pistol")
+	add_preset_weapon("shotgun")
+
 
 func _process(_delta):
 	sprite.look_at(get_global_mouse_position())
@@ -26,35 +39,91 @@ func _process(_delta):
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
 	look_vector = -Vector2.from_angle(sprite.rotation)
 	
-	if Input.is_action_just_pressed("fire"):
-		fire()
-	if Input.is_action_just_pressed("roll") and not rolling:
+	%TempPlayerHealthLabel.text = "%d HP" % health
+	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [current_weapon.current_ammo, current_weapon.max_ammo]
+	
+	if current_weapon.fire_mode == Weapons.FireMode.SEMI:
+		if Input.is_action_just_pressed("fire"):
+			fire()
+	elif current_weapon.fire_mode == Weapons.FireMode.FULL:
+		if Input.is_action_pressed("fire"):
+			fire()
+	
+	if Input.is_action_just_pressed("roll"):
 		roll()
+	
+	if Input.is_action_just_pressed("reload"):
+		reload()
+	
+	if Input.is_action_just_pressed("weapon-swap"):
+		swap_weapon()
+	
+	if autoreload and current_weapon.no_ammo:
+		reload()
+
 
 func _physics_process(_delta):
-	velocity = move_vector * speed
-	if rolling:
-		velocity = roll_vector * roll_speed
+	velocity = move_vector * speed if not rolling else roll_vector * roll_speed
 	move_and_slide()
 
+
 func roll():
-	roll_vector = move_vector
-	collision_mask = 1|6
-	if roll_vector == Vector2.ZERO:
-		roll_vector = look_vector
+	if rolling:
+		return
+	
 	rolling = true
+	current_weapon.interrupt_reload()
+	collision_mask = 1|64
+	roll_vector = look_vector if move_vector == Vector2.ZERO else move_vector
 	await get_tree().create_timer(roll_duration).timeout
+	collision_mask = 1|16|32|64
 	rolling = false
-	collision_mask = 1|4|5|6
+
 
 func fire():
-	pass
+	if current_weapon.no_ammo and not reloading:
+		reload()
+		return
+	
+	if rolling:
+		return
+	
+	current_weapon.fire()
 
-func change_balance(amount) -> bool:
+
+func reload():
+	if rolling or current_weapon.full_ammo or reloading:
+		return
+	
+	%TempReloadingLabel.show()
+	await current_weapon.reload()
+	%TempReloadingLabel.hide()
+
+
+func add_preset_weapon(new_weapon_name : String):
+	add_weapon(Weapons.new_preset_weapon(self, new_weapon_name))
+
+
+func add_weapon(new_weapon : Weapon):
+	if weapons.size() < MAX_WEAPONS:
+		weapons.push_back(new_weapon)
+		current_weapon_num += 1
+	else:
+		weapons[current_weapon_num] = new_weapon
+
+
+func swap_weapon():
+	current_weapon.interrupt_reload()
+	current_weapon_num += 1
+
+
+func change_balance(amount : int) -> bool:
 	cash_balance += amount;
 	if(cash_balance < 0):
 		cash_balance -= amount
 		return false
+	
 	if(cash_balance >= MAX_CASH):
 		cash_balance = MAX_CASH;
+	
 	return true

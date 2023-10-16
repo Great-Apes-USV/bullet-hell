@@ -6,7 +6,7 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_ow5vc"]
 
-[node name="Game" type="Node2D"]
+[node name="game" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_pghc2")]
 position = Vector2(530, 297)
@@ -14,7 +14,7 @@ position = Vector2(530, 297)
 [node name="Bullets" type="Node2D" parent="."]
 
 [node name="Wall" type="StaticBody2D" parent="."]
-position = Vector2(100, 324)
+position = Vector2(10, 324)
 scale = Vector2(1, 32.4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
