@@ -30,9 +30,14 @@ var full_ammo : bool:
 	get: return current_ammo == properties.max_ammo
 
 
-func _init(new_player := Player.new(), new_properties := {}):
+func _init(new_player : Player = null, new_properties := {}):
+	set_props_from_dict(new_properties)	
+	if new_player:
+		assign_player(new_player)
+
+
+func assign_player(new_player : Player):
 	player = new_player
-	set_props_from_dict(new_properties)
 	# must wait for tree to finish setting up children
 	player.get_tree().root.add_child.call_deferred(reload_timer)
 	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
