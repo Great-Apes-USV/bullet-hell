@@ -26,6 +26,8 @@ var reloading := false
 var delaying_reload := false
 var no_ammo : bool:
 	get: return current_ammo <= 0
+var full_ammo : bool:
+	get: return current_ammo == properties.max_ammo
 
 
 func _init(new_player := Player.new(), new_properties := {}):
@@ -102,6 +104,19 @@ func get_prop(property_name : String) -> Variant:
 func set_prop(property_name : String, value : Variant):
 	if properties.has(property_name):
 		properties[property_name] = value
+
+
+func _get(property: StringName) -> Variant:
+	if properties.has(property):
+		return properties[property]
+	return super._get(property)
+	
+
+func _set(property: StringName, value: Variant) -> bool:
+	if properties.has(property):
+		properties[property] = value
+		return true
+	return super._set(property, value)
 
 
 func _get_type() -> Weapons.WeaponType:

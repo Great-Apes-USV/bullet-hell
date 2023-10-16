@@ -40,12 +40,12 @@ func _process(_delta):
 	look_vector = -Vector2.from_angle(sprite.rotation)
 	
 	%TempPlayerHealthLabel.text = "%d HP" % health
-	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [current_weapon.current_ammo, current_weapon.properties.max_ammo]
+	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [current_weapon.current_ammo, current_weapon.max_ammo]
 	
-	if current_weapon.properties.fire_mode == Weapons.FireMode.SEMI:
+	if current_weapon.fire_mode == Weapons.FireMode.SEMI:
 		if Input.is_action_just_pressed("fire"):
 			fire()
-	elif current_weapon.properties.fire_mode == Weapons.FireMode.FULL:
+	elif current_weapon.fire_mode == Weapons.FireMode.FULL:
 		if Input.is_action_pressed("fire"):
 			fire()
 	
@@ -92,7 +92,7 @@ func fire():
 
 
 func reload():
-	if rolling or current_weapon.current_ammo == current_weapon.properties.max_ammo or reloading:
+	if rolling or current_weapon.full_ammo or reloading:
 		return
 	
 	%TempReloadingLabel.show()

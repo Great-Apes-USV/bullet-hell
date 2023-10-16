@@ -39,21 +39,21 @@ func new_preset_weapon(player : Player, preset_name := "") -> Weapon:
 		
 		match keyword:
 			"full":
-				new_weapon.properties.fire_mode = FireMode.FULL
+				new_weapon.fire_mode = FireMode.FULL
 			"semi":
-				new_weapon.properties.fire_mode = FireMode.SEMI
+				new_weapon.fire_mode = FireMode.SEMI
 			"extended":
-				new_weapon.properties.max_ammo *= 2
-				new_weapon.current_ammo = new_weapon.properties.max_ammo
+				new_weapon.max_ammo *= 2
+				new_weapon.current_ammo = new_weapon.max_ammo
 			"rapid":
-				new_weapon.properties.fire_rate *= 2
+				new_weapon.fire_rate *= 2
 			"ranged":
-				new_weapon.properties.bullet_range *= 2
+				new_weapon.bullet_range *= 2
 			"magnum":
-				new_weapon.properties.bullet_range *= 1.5
-				new_weapon.properties.damage *= 1.5
-				new_weapon.properties.bullet_speed *= 1.5
+				new_weapon.bullet_range *= 1.5
+				new_weapon.damage *= 1.5
+				new_weapon.bullet_speed *= 1.5
 			"lightweight":
-				new_weapon.properties.reload_speed /= 2
+				new_weapon.reload_speed /= 2
 	
 	return new_weapon
