@@ -1,9 +1,14 @@
 class_name DynamicObject
-extends Object
+extends RefCounted
 
 
 @export var override_default_set = true
 @export var properties := {}
+
+
+func set_props_from_dict(new_properties := {}):
+	for key in new_properties:
+		_set(key, new_properties[key])
 
 
 func _assign_default_properties():
@@ -12,11 +17,6 @@ func _assign_default_properties():
 
 func _add_default_properties(default_properties := {}):
 	properties.merge(default_properties)
-
-
-func set_props_from_dict(new_properties := {}):
-	for key in new_properties:
-		_set(key, new_properties[key])
 
 
 func _get(property: StringName) -> Variant:
