@@ -9,7 +9,7 @@ const MAX_WEAPONS : int = 2
 @export var roll_distance : float = 200
 @export var roll_duration := 0.3
 @export var autoreload := true
-@export var cash_balance : int = 0;
+@export var cash_balance : int = 0
 
 var move_vector := Vector2.ZERO
 var look_vector := Vector2.ZERO
