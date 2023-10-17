@@ -1,4 +1,4 @@
-class_name DynamicObject
+class_name DynamicRefCounted
 extends RefCounted
 
 

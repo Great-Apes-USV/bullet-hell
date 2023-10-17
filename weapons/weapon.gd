@@ -1,5 +1,5 @@
 class_name Weapon
-extends DynamicObject
+extends DynamicRefCounted
 
 var weapon_type : Weapons.WeaponType = _get_type()
 var player : Player
