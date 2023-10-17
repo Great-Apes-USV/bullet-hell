@@ -3,6 +3,7 @@ extends RigidBody2D
 
 
 const MAX_LIFETIME : int = 10
+const MAX_PIERCE : int = 1
 
 static var bullet_id : int = 0
 
@@ -34,7 +35,7 @@ func _physics_process(_delta):
 #			body.take_damage(damage)
 		if body is StaticBody2D:
 			if piercing:
-				if pierced_bodies.size() == 0:
+				if pierced_bodies.size() < MAX_PIERCE:
 					pierced_bodies.append(body)
 					continue
 				elif pierced_bodies.has(body):
