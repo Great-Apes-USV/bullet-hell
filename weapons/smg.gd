@@ -4,6 +4,7 @@ extends Weapon
 
 func _init(new_player : Player = null, new_properties := {}):
 	_add_default_properties({
+			fire_mode = Weapons.FireMode.FULL,
 			bullet_range = 500,
 			bullet_speed = 1000,
 			fire_rate = 10,

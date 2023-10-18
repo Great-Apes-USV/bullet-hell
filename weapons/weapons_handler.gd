@@ -57,5 +57,7 @@ func new_preset_weapon(player : Player, preset_name := "") -> Weapon:
 				new_weapon.reload_speed /= 2
 			"piercing":
 				new_weapon.piercing = true
+			"ricochet":
+				new_weapon.ricochet = true
 	
 	return new_weapon

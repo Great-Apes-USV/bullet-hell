@@ -29,6 +29,7 @@ func _init(new_player : Player = null, new_properties := {}):
 			reload_speed = 2,
 			reload_delay = 0.15,
 			piercing = false,
+			ricochet = false,
 	})
 	set_props_from_dict(new_properties)
 	if new_player:
@@ -64,6 +65,7 @@ func create_bullet() -> Bullet:
 	bullet.damage = properties.damage
 	bullet.bullet_range = properties.bullet_range
 	bullet.piercing = properties.piercing
+	bullet.ricochet = properties.ricochet
 	bullet.position = player.position - player.look_vector.normalized() * player.sprite.texture.get_width()
 	bullet.rotation = player.sprite.rotation
 	return bullet

@@ -11,6 +11,7 @@ var speed : float
 var damage : int
 var bullet_range : float
 var piercing : bool
+var ricochet : bool
 
 var distance_traveled : float = 0
 var piercing_a2d : Area2D
@@ -33,6 +34,8 @@ func _ready():
 	piercing_a2d.add_child($CollisionShape2D.duplicate())
 	add_child(piercing_a2d)
 	$CollisionShape2D.disabled = true
+	piercing_a2d.area_exited.connect(reenable_collision)
+	piercing_a2d.body_exited.connect(reenable_collision)
 
 
 func _process(delta):
@@ -42,14 +45,13 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	if not can_pierce:
-		$CollisionShape2D.disabled = false
-		piercing = false
-	
 	var touching_bodies : Array[Node2D] = []
 	var test_collision : KinematicCollision2D = move_and_collide(Vector2.from_angle(rotation) * speed * delta)
 	if test_collision:
 		var body := test_collision.get_collider() as Node2D
+		if ricochet:
+			var normal := Vector2.from_angle(test_collision.get_angle())
+			rotation = Vector2.from_angle(rotation).reflect(normal).angle()
 		touching_bodies.append(body)
 	
 	if piercing:
@@ -63,8 +65,17 @@ func _physics_process(delta):
 		if can_pierce:
 			pierced_bodies.append(body)
 			continue
+		if ricochet:
+			continue
 		die()
 		break
+
+
+func reenable_collision(_body : Node2D):
+	if not can_pierce:
+		$CollisionShape2D.set_deferred("disabled", false)
+		piercing = false
+
 
 func die_after_seconds(seconds : float):
 	await get_tree().create_timer(seconds).timeout
