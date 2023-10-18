@@ -5,7 +5,6 @@ extends Entity
 const MAX_CASH : int = 999
 const MAX_WEAPONS : int = 2
 
-
 @export var roll_distance : float = 200
 @export var roll_duration := 0.3
 @export var autoreload := true
@@ -93,6 +92,11 @@ func fire():
 
 func reload():
 	if rolling or current_weapon.full_ammo or reloading:
+		if current_weapon.full_ammo:
+			var enemy = preload("res://characters/enemy.tscn").instantiate()
+			enemy.position = get_global_mouse_position()
+			enemy.player = self
+			$/root/Game/Enemies.add_child(enemy)
 		return
 	
 	%TempReloadingLabel.show()

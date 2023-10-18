@@ -23,3 +23,5 @@ shape = SubResource("RectangleShape2D_bb0fj")
 [node name="MeshInstance2D" type="MeshInstance2D" parent="Wall"]
 scale = Vector2(20, 20)
 mesh = SubResource("BoxMesh_ow5vc")
+
+[node name="Enemies" type="Node2D" parent="."]

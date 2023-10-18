@@ -7,7 +7,7 @@ extends Resource
 @export var player : Player
 @export var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
 @export var properties = {
-	damage = 1,
+	damage = 20,
 	fire_rate = 10,
 	bullet_speed = 1000,
 	bullet_range = 2000,
@@ -109,14 +109,14 @@ func set_prop(property_name : String, value : Variant):
 func _get(property: StringName) -> Variant:
 	if properties.has(property):
 		return properties[property]
-	return super._get(property)
+	return null
 	
 
 func _set(property: StringName, value: Variant) -> bool:
 	if properties.has(property):
 		properties[property] = value
 		return true
-	return super._set(property, value)
+	return false
 
 
 func _get_type() -> Weapons.WeaponType:

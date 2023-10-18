@@ -27,10 +27,9 @@ func _process(delta):
 
 func _physics_process(_delta):
 	for body in get_colliding_bodies():
-#		if body is Enemy:
-#			body.take_damage(damage)
-		if body is StaticBody2D:
-			die()
+		if body is Enemy:
+			body.take_damage(damage)
+		die()
 
 
 func die_after_seconds(seconds : float):

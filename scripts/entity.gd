@@ -21,4 +21,4 @@ func heal(amount : int):
 
 
 func die():
-	pass
+	queue_free()
