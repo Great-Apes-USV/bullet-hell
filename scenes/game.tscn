@@ -25,6 +25,7 @@ scale = Vector2(20, 20)
 mesh = SubResource("BoxMesh_ow5vc")
 
 [node name="Enemies" type="Node2D" parent="."]
+
 [node name="Wall2" type="StaticBody2D" parent="."]
 position = Vector2(100, 324)
 scale = Vector2(1, 32.4)

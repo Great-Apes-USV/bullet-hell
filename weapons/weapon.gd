@@ -21,7 +21,7 @@ var full_ammo : bool:
 
 func _init(new_player : Player = null, new_properties := {}):
 	_add_default_properties({
-			damage = 1,
+			damage = 20,
 			fire_rate = 10,
 			bullet_speed = 1000,
 			bullet_range = 2000,
