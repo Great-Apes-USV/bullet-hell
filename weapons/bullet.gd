@@ -13,14 +13,26 @@ var bullet_range : float
 var piercing : bool
 
 var distance_traveled : float = 0
+var piercing_a2d : Area2D
 var pierced_bodies : Array[StaticBody2D] = []
+var can_pierce : bool:
+	get: return piercing and pierced_bodies.size() < MAX_PIERCE
 
 
 func _enter_tree():
 	name = "Bullet_%d" % bullet_id
 	bullet_id += 1 
-	linear_velocity = Vector2.from_angle(rotation) * speed
 	die_after_seconds(MAX_LIFETIME)
+
+
+func _ready():
+	if not piercing:
+		return
+	
+	piercing_a2d = Area2D.new()
+	piercing_a2d.add_child($CollisionShape2D.duplicate())
+	add_child(piercing_a2d)
+	$CollisionShape2D.disabled = true
 
 
 func _process(delta):
@@ -29,20 +41,30 @@ func _process(delta):
 		die()
 
 
-func _physics_process(_delta):
-	for body in get_colliding_bodies():
+func _physics_process(delta):
+	if not can_pierce:
+		$CollisionShape2D.disabled = false
+		piercing = false
+	
+	var touching_bodies : Array[Node2D] = []
+	var test_collision : KinematicCollision2D = move_and_collide(Vector2.from_angle(rotation) * speed * delta)
+	if test_collision:
+		var body := test_collision.get_collider() as Node2D
+		touching_bodies.append(body)
+	
+	if piercing:
+		touching_bodies = piercing_a2d.get_overlapping_bodies()
+	
+	for body in touching_bodies:
+		if pierced_bodies.has(body): # already processed
+			continue
 #		if body is Enemy:
 #			body.take_damage(damage)
-		if body is StaticBody2D:
-			if piercing:
-				if pierced_bodies.size() < MAX_PIERCE:
-					pierced_bodies.append(body)
-					continue
-				elif pierced_bodies.has(body):
-					continue
-			die()
-			break
-
+		if can_pierce:
+			pierced_bodies.append(body)
+			continue
+		die()
+		break
 
 func die_after_seconds(seconds : float):
 	await get_tree().create_timer(seconds).timeout

@@ -33,7 +33,7 @@ func _ready():
 	add_preset_weapon("shotgun")
 	#add_preset_weapon("semi_magnum_rifle")
 	#add_preset_weapon("semi_magnum_pistol")
-	add_preset_weapon("full_smg")
+	add_preset_weapon("full_rifle")
 
 
 func _process(_delta):
