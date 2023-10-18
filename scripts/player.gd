@@ -8,7 +8,7 @@ const MAX_WEAPONS : int = 2
 @export var roll_distance : float = 200
 @export var roll_duration := 0.3
 @export var autoreload := true
-@export var cash_balance : int = 0;
+@export var cash_balance : int = 0
 
 var move_vector := Vector2.ZERO
 var look_vector := Vector2.ZERO
@@ -28,8 +28,11 @@ var reloading : bool:
 
 
 func _ready():
-	add_preset_weapon("full_rapid_lightweight_pistol")
-	add_preset_weapon("shotgun")
+	#add_preset_weapon("full_rapid_lightweight_pistol")
+	add_preset_weapon("rapid_lightweight_ricochet_smg")
+	#add_preset_weapon("semi_magnum_rifle")
+	#add_preset_weapon("semi_magnum_pistol")
+	add_preset_weapon("full_rifle")
 
 
 func _process(_delta):

@@ -1,24 +1,13 @@
 class_name Weapon
-extends Resource
+extends DynamicRefCounted
 
 
-@export var name : String
-@export var type : Weapons.WeaponType = _get_type()
-@export var player : Player
-@export var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
-@export var properties = {
-	damage = 20,
-	fire_rate = 10,
-	bullet_speed = 1000,
-	bullet_range = 2000,
-	fire_mode = Weapons.FireMode.SEMI,
-	max_ammo = 100,
-	reload_speed = 2,
-	reload_delay = 0.15,
-}
+var weapon_type : Weapons.WeaponType = _get_type()
+var player : Player
+var BulletNode : PackedScene = preload("res://weapons/bullet.tscn")
 
 var preset_name := ""
-var current_ammo : int = properties.max_ammo
+var current_ammo : int
 var reload_timer := Timer.new()
 var bullets_node : Node2D
 var firing := false
@@ -30,18 +19,34 @@ var full_ammo : bool:
 	get: return current_ammo == properties.max_ammo
 
 
-func _init(new_player := Player.new(), new_properties := {}):
-	player = new_player
+func _init(new_player : Player = null, new_properties := {}):
+	_add_default_properties({
+			damage = 1,
+			fire_rate = 10,
+			bullet_speed = 1000,
+			bullet_range = 2000,
+			fire_mode = Weapons.FireMode.SEMI,
+			max_ammo = 100,
+			reload_speed = 2,
+			reload_delay = 0.15,
+			piercing = false,
+			ricochet = false,
+	})
 	set_props_from_dict(new_properties)
-	# must wait for tree to finish setting up children
-	player.get_tree().root.add_child.call_deferred(reload_timer)
-	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
+	if new_player:
+		add_player(new_player)
 
 
 func set_props_from_dict(new_properties := {}):
-	for key in new_properties:
-		set_prop(key, new_properties[key])
+	super.set_props_from_dict(new_properties)
 	current_ammo = properties.max_ammo
+
+
+func add_player(new_player : Player):
+	player = new_player
+	# must wait for tree to finish setting up children
+	player.get_tree().root.add_child.call_deferred(reload_timer)
+	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
 
 
 func fire():
@@ -60,6 +65,8 @@ func create_bullet() -> Bullet:
 	bullet.speed = properties.bullet_speed
 	bullet.damage = properties.damage
 	bullet.bullet_range = properties.bullet_range
+	bullet.piercing = properties.piercing
+	bullet.ricochet = properties.ricochet
 	bullet.position = player.position - player.look_vector.normalized() * player.sprite.texture.get_width()
 	bullet.rotation = player.sprite.rotation
 	return bullet
@@ -95,28 +102,6 @@ func begin_reload_delay():
 	delaying_reload = true
 	await player.get_tree().create_timer(properties.reload_delay).timeout
 	delaying_reload = false
-
-
-func get_prop(property_name : String) -> Variant:
-	return properties[property_name]
-
-
-func set_prop(property_name : String, value : Variant):
-	if properties.has(property_name):
-		properties[property_name] = value
-
-
-func _get(property: StringName) -> Variant:
-	if properties.has(property):
-		return properties[property]
-	return null
-	
-
-func _set(property: StringName, value: Variant) -> bool:
-	if properties.has(property):
-		properties[property] = value
-		return true
-	return false
 
 
 func _get_type() -> Weapons.WeaponType:
