@@ -2,7 +2,7 @@ class_name Shotgun
 extends Weapon
 
 
-func _init(new_player := Player.new(), new_properties := {}):
+func _init(new_player : Player = null, new_properties := {}):
 	_add_default_properties({
 			bullet_range = 250,
 			bullet_speed = 750,

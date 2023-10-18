@@ -18,7 +18,7 @@ var full_ammo : bool:
 	get: return current_ammo == properties.max_ammo
 
 
-func _init(new_player := Player.new(), new_properties := {}):
+func _init(new_player : Player = null, new_properties := {}):
 	_add_default_properties({
 			damage = 1,
 			fire_rate = 10,
@@ -28,17 +28,24 @@ func _init(new_player := Player.new(), new_properties := {}):
 			max_ammo = 100,
 			reload_speed = 2,
 			reload_delay = 0.15,
+			piercing = false,
+			ricochet = false,
 	})
-	player = new_player
 	set_props_from_dict(new_properties)
-	# must wait for tree to finish setting up children
-	player.get_tree().root.add_child.call_deferred(reload_timer)
-	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
+	if new_player:
+		add_player(new_player)
 
 
 func set_props_from_dict(new_properties := {}):
 	super.set_props_from_dict(new_properties)
 	current_ammo = properties.max_ammo
+
+
+func add_player(new_player : Player):
+	player = new_player
+	# must wait for tree to finish setting up children
+	player.get_tree().root.add_child.call_deferred(reload_timer)
+	bullets_node = player.get_tree().root.get_node(^"/root/Game/Bullets")
 
 
 func fire():
@@ -57,6 +64,8 @@ func create_bullet() -> Bullet:
 	bullet.speed = properties.bullet_speed
 	bullet.damage = properties.damage
 	bullet.bullet_range = properties.bullet_range
+	bullet.piercing = properties.piercing
+	bullet.ricochet = properties.ricochet
 	bullet.position = player.position - player.look_vector.normalized() * player.sprite.texture.get_width()
 	bullet.rotation = player.sprite.rotation
 	return bullet
