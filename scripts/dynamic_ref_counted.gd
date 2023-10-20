@@ -11,12 +11,14 @@ func set_props_from_dict(new_properties := {}):
 		_set(key, new_properties[key])
 
 
-func _assign_default_properties():
-	properties = {}
+func _get_class_defaults() -> Dictionary:
+	var class_defaults := {}
+	return class_defaults
 
 
-func _add_default_properties(default_properties := {}):
-	properties.merge(default_properties)
+func _add_class_defaults():
+	var class_defaults : Dictionary = _get_class_defaults()
+	properties.merge(class_defaults)
 
 
 func _get(property: StringName) -> Variant:

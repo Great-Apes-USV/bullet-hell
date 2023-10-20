@@ -2,8 +2,8 @@ class_name Shotgun
 extends Weapon
 
 
-func _init(new_player := Player.new(), new_properties := {}):
-	_add_default_properties({
+func _get_class_defaults() -> Dictionary:
+	var class_defaults := {
 			bullet_range = 250,
 			bullet_speed = 750,
 			fire_rate = 3,
@@ -12,8 +12,14 @@ func _init(new_player := Player.new(), new_properties := {}):
 			spread_angle = 30,
 			bullet_count = 5,
 			slug = false,
-	})
-	super._init(new_player, new_properties)
+	}
+	return class_defaults
+
+
+func _add_class_defaults():
+	var class_defaults : Dictionary = _get_class_defaults()
+	class_defaults.merge(super._get_class_defaults())
+	properties.merge(class_defaults)
 
 
 func spawn_bullets():

@@ -19,16 +19,7 @@ var full_ammo : bool:
 
 
 func _init(new_player := Player.new(), new_properties := {}):
-	_add_default_properties({
-			damage = 1,
-			fire_rate = 10,
-			bullet_speed = 1000,
-			bullet_range = 2000,
-			fire_mode = Weapons.FireMode.SEMI,
-			max_ammo = 100,
-			reload_speed = 2,
-			reload_delay = 0.15,
-	})
+	_add_class_defaults()
 	player = new_player
 	set_props_from_dict(new_properties)
 	# must wait for tree to finish setting up children
@@ -39,6 +30,26 @@ func _init(new_player := Player.new(), new_properties := {}):
 func set_props_from_dict(new_properties := {}):
 	super.set_props_from_dict(new_properties)
 	current_ammo = properties.max_ammo
+
+
+func _get_class_defaults() -> Dictionary:
+	var class_defaults := {
+			damage = 1,
+			fire_rate = 10,
+			bullet_speed = 1000,
+			bullet_range = 2000,
+			fire_mode = Weapons.FireMode.SEMI,
+			max_ammo = 100,
+			reload_speed = 2,
+			reload_delay = 0.15,
+	}
+	return class_defaults
+
+
+func _add_class_defaults():
+	var class_defaults : Dictionary = _get_class_defaults()
+	class_defaults.merge(super._get_class_defaults())
+	properties.merge(class_defaults)
 
 
 func fire():
