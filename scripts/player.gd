@@ -9,6 +9,7 @@ const MAX_WEAPONS : int = 2
 @export var roll_duration := 0.3
 @export var autoreload := true
 @export var cash_balance : int = 0
+@export var spawn_point := Vector2(530, 297) # harcoded, update with checkpoint system and game manager
 
 var move_vector := Vector2.ZERO
 var look_vector := Vector2.ZERO
@@ -70,6 +71,18 @@ func _process(_delta):
 func _physics_process(_delta):
 	velocity = move_vector * speed if not rolling else roll_vector * roll_speed
 	move_and_slide()
+
+
+func die():
+	respawn()
+
+
+func respawn():
+	position = spawn_point
+	health = max_health
+	cash_balance = 0
+	for weapon in weapons:
+		weapon.current_ammo = weapon.max_ammo
 
 
 func roll():
