@@ -60,6 +60,9 @@ func _process(_delta):
 	if Input.is_action_just_pressed("weapon-swap"):
 		swap_weapon()
 	
+	if Input.is_action_just_pressed("debug-spawn-enemy"):
+		debug_spawn_enemy()
+	
 	if autoreload and current_weapon.no_ammo:
 		reload()
 
@@ -95,11 +98,6 @@ func fire():
 
 func reload():
 	if rolling or current_weapon.full_ammo or reloading:
-		if current_weapon.full_ammo:
-			var enemy = preload("res://characters/enemy.tscn").instantiate()
-			enemy.position = get_global_mouse_position()
-			enemy.player = self
-			$/root/Game/Enemies.add_child(enemy)
 		return
 	
 	%TempReloadingLabel.show()
@@ -134,3 +132,10 @@ func change_balance(amount : int) -> bool:
 		cash_balance = MAX_CASH;
 	
 	return true
+
+
+func debug_spawn_enemy():
+	var enemy = preload("res://characters/enemy.tscn").instantiate()
+	enemy.position = get_global_mouse_position()
+	enemy.player = self
+	$/root/Game/Enemies.add_child(enemy)

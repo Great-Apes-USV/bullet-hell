@@ -2,6 +2,8 @@ class_name Enemy
 extends Entity
 
 
+@export var damage : int = 5
+
 var player : Player
 
 
@@ -12,5 +14,7 @@ func _init(new_player : Player = null):
 func _physics_process(delta):
 	if player:
 		look_at(player.position)
-		velocity = Vector2.from_angle(rotation) * speed;
-		move_and_slide()
+		var collision : KinematicCollision2D = move_and_collide(Vector2.from_angle(rotation) * speed * delta)
+		if collision and collision.get_collider() == player:
+			player.take_damage(damage)
+			die()
