@@ -14,10 +14,10 @@ var piercing : bool
 var ricochet : bool
 
 var distance_traveled : float = 0
-var piercing_a2d : Area2D
-var pierced_bodies : Array[StaticBody2D] = []
+var bodies_pierced = 0
+var still_piercing : Array[Node2D] = []
 var can_pierce : bool:
-	get: return piercing and pierced_bodies.size() < MAX_PIERCE
+	get: return piercing and bodies_pierced < MAX_PIERCE
 
 
 func _enter_tree():
@@ -27,15 +27,8 @@ func _enter_tree():
 
 
 func _ready():
-	if not piercing:
-		return
-	
-	piercing_a2d = Area2D.new()
-	piercing_a2d.add_child($CollisionShape2D.duplicate())
-	add_child(piercing_a2d)
-	$CollisionShape2D.disabled = true
-	piercing_a2d.area_exited.connect(reenable_collision)
-	piercing_a2d.body_exited.connect(reenable_collision)
+	$Area2D.area_exited.connect(reenable_collision)
+	$Area2D.body_exited.connect(reenable_collision)
 
 
 func _process(delta):
@@ -53,27 +46,30 @@ func _physics_process(delta):
 			var normal := Vector2.from_angle(test_collision.get_angle())
 			rotation = Vector2.from_angle(rotation).reflect(normal).angle()
 		touching_bodies.append(body)
-	
-	if piercing:
-		touching_bodies = piercing_a2d.get_overlapping_bodies()
+	touching_bodies.append_array($Area2D.get_overlapping_bodies())
 	
 	for body in touching_bodies:
-		if pierced_bodies.has(body): # already processed
+		if still_piercing.has(body): # already processed
 			continue
-#		if body is Enemy:
-#			body.take_damage(damage)
-		if can_pierce:
-			pierced_bodies.append(body)
+		
+		if body is Enemy:
+			body.take_damage(damage)
+		
+		if can_pierce and not body.collision_layer & 1:
+			still_piercing.append(body)
+			bodies_pierced += 1
 			continue
-		if ricochet:
+		
+		if ricochet and not body is Enemy:
 			continue
+		
 		die()
 		break
 
 
-func reenable_collision(_body : Node2D):
+func reenable_collision(body : Node2D):
+	still_piercing.erase(body)
 	if not can_pierce:
-		$CollisionShape2D.set_deferred("disabled", false)
 		piercing = false
 
 

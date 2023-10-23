@@ -5,7 +5,6 @@ extends Entity
 const MAX_CASH : int = 999
 const MAX_WEAPONS : int = 2
 
-@export var speed : float = 300
 @export var roll_distance : float = 200
 @export var roll_duration := 0.3
 @export var autoreload := true
@@ -33,7 +32,7 @@ func _ready():
 	add_preset_weapon("rapid_lightweight_ricochet_smg")
 	#add_preset_weapon("semi_magnum_rifle")
 	#add_preset_weapon("semi_magnum_pistol")
-	add_preset_weapon("full_rifle")
+	add_preset_weapon("full_ricochet_rifle")
 
 
 func _process(_delta):
@@ -60,6 +59,9 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("weapon-swap"):
 		swap_weapon()
+	
+	if Input.is_action_just_pressed("debug-spawn-enemy"):
+		debug_spawn_enemy()
 	
 	if autoreload and current_weapon.no_ammo:
 		reload()
@@ -130,3 +132,10 @@ func change_balance(amount : int) -> bool:
 		cash_balance = MAX_CASH;
 	
 	return true
+
+
+func debug_spawn_enemy():
+	var enemy = preload("res://characters/enemy.tscn").instantiate()
+	enemy.position = get_global_mouse_position()
+	enemy.player = self
+	$/root/Game/Enemies.add_child(enemy)
