@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7dp3qla5pe6t"]
+
+[ext_resource type="PackedScene" uid="uid://bgtwketxp2ay4" path="res://ldtk/bullet-hell.ldtk" id="1_0rcwq"]
+[ext_resource type="TileSet" uid="uid://c3yug4niukkty" path="res://ldtk/tilesets/tileset64x64.res" id="2_wqrkn"]
+
+[node name="bullet-hell" instance=ExtResource("1_0rcwq")]
+
+[node name="Tilemaps64x64" parent="WorldLayer_0/Level_0" index="0"]
+tile_set = ExtResource("2_wqrkn")
+layer_0/enabled = true

@@ -1,62 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bc5a2il7swow2"]
+[gd_scene load_steps=3 format=3 uid="uid://bc5a2il7swow2"]
 
 [ext_resource type="PackedScene" uid="uid://7l5x4jhsk0ht" path="res://characters/player.tscn" id="1_pghc2"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bb0fj"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_ow5vc"]
+[ext_resource type="PackedScene" uid="uid://b7dp3qla5pe6t" path="res://scenes/bullet_hell.tscn" id="2_cxjlo"]
 
 [node name="Game" type="Node2D"]
+
+[node name="bullet-hell" parent="." instance=ExtResource("2_cxjlo")]
+z_index = -1
 
 [node name="Player" parent="." instance=ExtResource("1_pghc2")]
 position = Vector2(530, 297)
 
 [node name="Bullets" type="Node2D" parent="."]
 
-[node name="Wall" type="StaticBody2D" parent="."]
-position = Vector2(300, 324)
-scale = Vector2(1, 32.4)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
-shape = SubResource("RectangleShape2D_bb0fj")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Wall"]
-scale = Vector2(20, 20)
-mesh = SubResource("BoxMesh_ow5vc")
-
 [node name="Enemies" type="Node2D" parent="."]
-
-[node name="Wall2" type="StaticBody2D" parent="."]
-position = Vector2(100, 324)
-scale = Vector2(1, 32.4)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall2"]
-shape = SubResource("RectangleShape2D_bb0fj")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Wall2"]
-scale = Vector2(20, 20)
-mesh = SubResource("BoxMesh_ow5vc")
-
-[node name="Wall3" type="StaticBody2D" parent="."]
-position = Vector2(184, 480)
-rotation = 1.5708
-scale = Vector2(1, 32.4)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall3"]
-shape = SubResource("RectangleShape2D_bb0fj")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Wall3"]
-scale = Vector2(20, 20)
-mesh = SubResource("BoxMesh_ow5vc")
-
-[node name="Wall4" type="StaticBody2D" parent="."]
-position = Vector2(193, 135)
-rotation = 0.785398
-scale = Vector2(1, 32.4)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall4"]
-shape = SubResource("RectangleShape2D_bb0fj")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Wall4"]
-scale = Vector2(20, 20)
-mesh = SubResource("BoxMesh_ow5vc")

@@ -19,6 +19,15 @@ config/icon="res://icon.svg"
 
 Weapons="*res://weapons/weapons_handler.gd"
 
+[display]
+
+window/size/viewport_width=1536
+window/size/viewport_height=1024
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ldtk-importer/plugin.cfg")
+
 [input]
 
 move-up={
