@@ -6,8 +6,8 @@ func _ready():
 
 
 func _on_viewport_resize():
-	var fake_size : Vector2i = get_viewport_transform().get_scale().x * $World.rect.size
-	var window_size : Vector2i = DisplayServer.window_get_size()
+	var viewport_scale : float = get_viewport_transform().get_scale().x # aspect ratio locked
+	var window_size : Vector2i = DisplayServer.window_get_size() / viewport_scale
 	
-	position.x = ((window_size.x - fake_size.x) / 2) / get_viewport_transform().get_scale().x
-	position.y = ((window_size.y - fake_size.y) / 2) / get_viewport_transform().get_scale().y
+	position.x = (window_size.x - $World.rect.size.x) / 2
+	position.y = (window_size.y - $World.rect.size.y) / 2
