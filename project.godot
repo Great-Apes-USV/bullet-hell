@@ -23,6 +23,8 @@ Weapons="*res://weapons/weapons_handler.gd"
 
 window/size/viewport_width=1536
 window/size/viewport_height=1024
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
@@ -90,3 +92,4 @@ avoidance/layer_2="enemies"
 [rendering]
 
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0.133333, 0.12549, 0.207843, 1)

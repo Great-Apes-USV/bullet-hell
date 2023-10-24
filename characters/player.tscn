@@ -5,7 +5,7 @@
 [ext_resource type="StyleBox" uid="uid://fmv7fmrb362a" path="res://art/style/label_background_stylebox.tres" id="3_sew8o"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_debrt"]
-radius = 11.0
+radius = 32.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -14,7 +14,6 @@ script = ExtResource("1_o0g6r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.43051e-06, 1.43051e-06)
-scale = Vector2(3, 3)
 shape = SubResource("CircleShape2D_debrt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
