@@ -84,6 +84,8 @@ debug-spawn-enemy={
 2d_physics/layer_4="enemies"
 2d_physics/layer_5="enemy_projectiles"
 2d_physics/layer_6="pickups"
+avoidance/layer_1="world"
+avoidance/layer_2="enemies"
 
 [rendering]
 
