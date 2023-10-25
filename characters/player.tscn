@@ -24,6 +24,7 @@ texture = ExtResource("1_0gt67")
 [node name="TempReloadingLabel" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
+z_index = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -40,6 +41,7 @@ text = "reloading..."
 
 [node name="TempPlayerHealthLabel" type="Label" parent="."]
 unique_name_in_owner = true
+z_index = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -57,6 +59,7 @@ horizontal_alignment = 2
 
 [node name="TempWeaponAmmoLabel" type="Label" parent="."]
 unique_name_in_owner = true
+z_index = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
