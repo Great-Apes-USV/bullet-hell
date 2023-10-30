@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://7l5x4jhsk0ht"]
+[gd_scene load_steps=5 format=3 uid="uid://7l5x4jhsk0ht"]
 
 [ext_resource type="Texture2D" uid="uid://bjgi5pr5uyfl3" path="res://art/sprites/player_sprite.png" id="1_0gt67"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_o0g6r"]
+[ext_resource type="StyleBox" uid="uid://fmv7fmrb362a" path="res://art/style/label_background_stylebox.tres" id="3_sew8o"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_debrt"]
-radius = 11.0
+radius = 32.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -13,7 +14,6 @@ script = ExtResource("1_o0g6r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.43051e-06, 1.43051e-06)
-scale = Vector2(3, 3)
 shape = SubResource("CircleShape2D_debrt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -24,6 +24,7 @@ texture = ExtResource("1_0gt67")
 [node name="TempReloadingLabel" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
+z_index = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -35,10 +36,12 @@ offset_right = 43.5
 offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = ExtResource("3_sew8o")
 text = "reloading..."
 
 [node name="TempPlayerHealthLabel" type="Label" parent="."]
 unique_name_in_owner = true
+z_index = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -50,11 +53,13 @@ offset_right = -33.0
 offset_bottom = -6.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_styles/normal = ExtResource("3_sew8o")
 text = "100 HP"
 horizontal_alignment = 2
 
 [node name="TempWeaponAmmoLabel" type="Label" parent="."]
 unique_name_in_owner = true
+z_index = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -63,5 +68,6 @@ offset_top = 6.0
 offset_right = -32.0
 offset_bottom = 32.0
 grow_horizontal = 0
+theme_override_styles/normal = ExtResource("3_sew8o")
 text = "2/2 Ammo"
 horizontal_alignment = 2

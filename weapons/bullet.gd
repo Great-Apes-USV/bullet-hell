@@ -55,12 +55,12 @@ func _physics_process(delta):
 		if body is Enemy:
 			body.take_damage(damage)
 		
-		if can_pierce and not body.collision_layer & 1:
-			still_piercing.append(body)
-			bodies_pierced += 1
+		if ricochet and not body is Enemy:
 			continue
 		
-		if ricochet and not body is Enemy:
+		if can_pierce:
+			still_piercing.append(body)
+			bodies_pierced += 1
 			continue
 		
 		die()

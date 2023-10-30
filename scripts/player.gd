@@ -136,6 +136,6 @@ func change_balance(amount : int) -> bool:
 
 func debug_spawn_enemy():
 	var enemy = preload("res://characters/enemy.tscn").instantiate()
-	enemy.position = get_global_mouse_position()
+	enemy.position = get_global_mouse_position() - (Vector2($/root/Game.gap) / 2)
 	enemy.player = self
 	$/root/Game/Enemies.add_child(enemy)
