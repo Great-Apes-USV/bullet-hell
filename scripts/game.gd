@@ -1,9 +1,9 @@
 extends Node2D
 
+
 @onready var viewport_scale : float = get_viewport_transform().get_scale().x # aspect ratio locked
 @onready var window_size : Vector2i = DisplayServer.window_get_size() / viewport_scale
 @onready var aspect_ratio : float = float(window_size.x) / window_size.y
-@onready var gap : Vector2i
 
 
 func _ready():
@@ -12,7 +12,7 @@ func _ready():
 		window_size *= float($World.rect.size.x) / window_size.x
 	else:
 		window_size *= float($World.rect.size.y) / window_size.y
-	gap = window_size - $World.rect.size
+	GameHandler._global_offset = (window_size - $World.rect.size) / 2
 	get_viewport().content_scale_size = window_size
 	position = (window_size - $World.rect.size) / 2
 	
