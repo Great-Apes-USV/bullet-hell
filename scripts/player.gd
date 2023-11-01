@@ -89,9 +89,11 @@ func roll():
 	rolling = true
 	current_weapon.interrupt_reload()
 	collision_mask = 1|64
+	collision_layer = 0
 	roll_vector = look_vector if move_vector == Vector2.ZERO else move_vector
 	await get_tree().create_timer(roll_duration).timeout
 	collision_mask = 1|16|32|64
+	collision_layer = 2
 	current_stamina -= stamina_cost #adjustable stamina cost for rolling
 	stamina_regeneration_delay_timer.start(stamina_regeneration_delay)
 	just_rolled = true

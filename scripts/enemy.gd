@@ -28,7 +28,6 @@ func _physics_process(delta):
 
 		var collision : KinematicCollision2D = move_and_collide(velocity.normalized() * speed * delta)
 		if collision and collision.get_collider() == player:
-			
 			player.take_damage(damage)
 			die()
 
