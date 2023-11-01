@@ -2,7 +2,7 @@ extends Node
 
 
 enum FireMode {SEMI, FULL}
-enum WeaponType {ANY, PISTOL, SHOTGUN, RIFLE, SMG}
+enum WeaponType {ANY, PISTOL, SHOTGUN, RIFLE, FIREBOLT, SMG}
 
 
 func weapon_from_type(weapon_type : Weapons.WeaponType) -> GDScript:
@@ -13,6 +13,8 @@ func weapon_from_type(weapon_type : Weapons.WeaponType) -> GDScript:
 			return Shotgun
 		WeaponType.RIFLE:
 			return Rifle
+		WeaponType.FIREBOLT:
+			return Firebolt
 		WeaponType.SMG:
 			return SMG
 		_:
@@ -59,5 +61,7 @@ func new_preset_weapon(player : Player, preset_name := "") -> Weapon:
 				new_weapon.piercing = true
 			"ricochet":
 				new_weapon.ricochet = true
+			"explode":
+				new_weapon.explode = true
 	
 	return new_weapon
