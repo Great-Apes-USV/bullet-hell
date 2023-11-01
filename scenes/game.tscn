@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bc5a2il7swow2"]
+[gd_scene load_steps=6 format=3 uid="uid://bc5a2il7swow2"]
 
 [ext_resource type="PackedScene" uid="uid://7l5x4jhsk0ht" path="res://characters/player.tscn" id="1_pghc2"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_v2fx5"]
 [ext_resource type="PackedScene" uid="uid://cvkcnrve7bs1c" path="res://scenes/world.tscn" id="2_pe1tc"]
+[ext_resource type="Script" path="res://scenes/level_select.gd" id="4_3oyhy"]
+[ext_resource type="Texture2D" uid="uid://c753bcdbw0p77" path="res://icon.svg" id="5_1ox1p"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_v2fx5")
@@ -15,3 +17,23 @@ position = Vector2(530, 297)
 [node name="Bullets" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="."]
+
+[node name="LevelSelectMenu" type="Control" parent="."]
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 449.0
+offset_top = 213.0
+offset_right = 1149.0
+offset_bottom = 361.0
+script = ExtResource("4_3oyhy")
+
+[node name="TextureButton" type="TextureButton" parent="LevelSelectMenu"]
+visible = false
+layout_mode = 0
+offset_left = 478.0
+offset_top = 280.0
+offset_right = 1025.0
+offset_bottom = 352.0
+tooltip_text = "Level 1"
+texture_normal = ExtResource("5_1ox1p")

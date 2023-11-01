@@ -74,6 +74,8 @@ func _process(_delta):
 	
 	if autoreload and current_weapon.no_ammo:
 		reload()
+	if Input.is_action_pressed("show_menu"):
+		$LevelSelectMenu/TextureButton.visible = not $LevelSelectMenu/TextureButton.visible
 
 
 func _physics_process(delta):
