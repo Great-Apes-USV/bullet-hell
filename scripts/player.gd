@@ -10,6 +10,9 @@ const MAX_WEAPONS : int = 2
 @export var autoreload := true
 @export var cash_balance : int = 0
 @export var max_stamina : float = 100
+@export var stamina_cost : float = 20
+@export var stamina_regeneration_rate : float = 10
+
 
 var move_vector := Vector2.ZERO
 var look_vector := Vector2.ZERO
@@ -24,7 +27,6 @@ var current_weapon : Weapon:
 var reloading : bool:
 	get: return current_weapon.reloading
 var current_stamina : float = max_stamina
-var stamina_regeneration_rate : float = 10
 
 
 @onready var sprite : Sprite2D = $Sprite2D
@@ -72,14 +74,14 @@ func _process(_delta):
 		reload()
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	velocity = move_vector * speed if not rolling else roll_vector * roll_speed
 	move_and_slide()
-	regenerate_stamina(_delta) 
+	regenerate_stamina(delta) 
 
 
 func roll():
-	if rolling or current_stamina <= 19:
+	if rolling or current_stamina < stamina_cost:
 		return
 	
 	rolling = true
@@ -89,7 +91,7 @@ func roll():
 	await get_tree().create_timer(roll_duration).timeout
 	collision_mask = 1|16|32|64
 	rolling = false
-	current_stamina -= 20 #adjustable stamina cost for rolling
+	current_stamina -= stamina_cost #adjustable stamina cost for rolling
 
 
 func fire():
