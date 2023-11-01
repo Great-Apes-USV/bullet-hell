@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://7l5x4jhsk0ht"]
 
-[ext_resource type="Texture2D" uid="uid://bjgi5pr5uyfl3" path="res://art/sprites/player_sprite.png" id="1_0gt67"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_o0g6r"]
+[ext_resource type="Texture2D" uid="uid://d376mtyvdvmxa" path="res://art/sprites/player_sprite_64.png" id="2_686l4"]
 [ext_resource type="StyleBox" uid="uid://fmv7fmrb362a" path="res://art/style/label_background_stylebox.tres" id="3_sew8o"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_debrt"]
@@ -18,8 +18,7 @@ shape = SubResource("CircleShape2D_debrt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(2, 2)
-texture = ExtResource("1_0gt67")
+texture = ExtResource("2_686l4")
 
 [node name="TempReloadingLabel" type="Label" parent="."]
 unique_name_in_owner = true
