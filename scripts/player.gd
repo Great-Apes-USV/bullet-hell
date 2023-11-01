@@ -12,12 +12,14 @@ const MAX_WEAPONS : int = 2
 @export var max_stamina : float = 100
 @export var stamina_cost : float = 20
 @export var stamina_regeneration_rate : float = 10
-
+@export var stamina_regeneration_delay : float = 0.5
 
 var move_vector := Vector2.ZERO
 var look_vector := Vector2.ZERO
 var roll_vector := Vector2.ZERO
+var roll_speed : float = roll_distance / roll_duration
 var rolling := false
+var just_rolled := false
 var weapons : Array[Weapon] = []
 var current_weapon_num : int = 0:
 	set(value):
@@ -27,13 +29,13 @@ var current_weapon : Weapon:
 var reloading : bool:
 	get: return current_weapon.reloading
 var current_stamina : float = max_stamina
-
+var stamina_regeneration_delay_timer := Timer.new()
 
 @onready var sprite : Sprite2D = $Sprite2D
-@onready var roll_speed : float = roll_distance / roll_duration
 
 
 func _ready():
+	add_child(stamina_regeneration_delay_timer)
 	#add_preset_weapon("full_rapid_lightweight_pistol")
 	add_preset_weapon("rapid_lightweight_ricochet_smg")
 	#add_preset_weapon("semi_magnum_rifle")
@@ -90,8 +92,10 @@ func roll():
 	roll_vector = look_vector if move_vector == Vector2.ZERO else move_vector
 	await get_tree().create_timer(roll_duration).timeout
 	collision_mask = 1|16|32|64
-	rolling = false
 	current_stamina -= stamina_cost #adjustable stamina cost for rolling
+	stamina_regeneration_delay_timer.start(stamina_regeneration_delay)
+	just_rolled = true
+	rolling = false
 
 
 func fire():
@@ -150,7 +154,10 @@ func debug_spawn_enemy():
 	$/root/Game/Enemies.add_child(enemy)
 
 func regenerate_stamina(delta: float):
-	if current_stamina < max_stamina:
+	if just_rolled:
+		await stamina_regeneration_delay_timer.timeout
+		just_rolled = false
+	elif not rolling and current_stamina < max_stamina:
 		current_stamina += stamina_regeneration_rate * delta
 		current_stamina = min(current_stamina, max_stamina)
 		current_stamina = max(current_stamina, 0)
