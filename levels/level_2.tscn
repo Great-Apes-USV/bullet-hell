@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0g5ony4q2rvh"]
 
 [ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_y4t3e"]
-[ext_resource type="TileSet" uid="uid://yt5q6nynq08h" path="res://ldtk/tilesets/nav_tileset.tres" id="2_4rjgb"]
+[ext_resource type="TileSet" uid="uid://bowexv724yj76" path="res://ldtk/tilesets/tileset64x64.res" id="2_hbsd4"]
 
 [node name="Level_2" type="Node2D"]
 script = ExtResource("1_y4t3e")
@@ -17,7 +17,7 @@ bg_color = Color(0.411765, 0.415686, 0.47451, 1)
 
 [node name="Tilemaps64x64" type="TileMap" parent="."]
 texture_filter = 1
-tile_set = ExtResource("2_4rjgb")
+tile_set = ExtResource("2_hbsd4")
 cell_quadrant_size = 64
 format = 2
 layer_0/name = "Collision-values"
