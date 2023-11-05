@@ -19,6 +19,8 @@ var still_piercing : Array[Node2D] = []
 var can_pierce : bool:
 	get: return piercing and bodies_pierced < MAX_PIERCE
 
+var velocity : Vector2
+
 
 func _enter_tree():
 	name = "Bullet_%d" % bullet_id
@@ -29,6 +31,7 @@ func _enter_tree():
 func _ready():
 	$Area2D.area_exited.connect(reenable_collision)
 	$Area2D.body_exited.connect(reenable_collision)
+	velocity = Vector2.RIGHT.rotated(rotation) * speed
 
 
 func _process(delta):
@@ -39,12 +42,13 @@ func _process(delta):
 
 func _physics_process(delta):
 	var touching_bodies : Array[Node2D] = []
-	var test_collision : KinematicCollision2D = move_and_collide(Vector2.from_angle(rotation) * speed * delta)
+	var test_collision : KinematicCollision2D = move_and_collide(velocity * delta)
 	if test_collision:
 		var body := test_collision.get_collider() as Node2D
 		if ricochet:
-			var normal := Vector2.from_angle(test_collision.get_angle())
-			rotation = Vector2.from_angle(rotation).reflect(normal).angle()
+			velocity = velocity.bounce(test_collision.get_normal())
+#			var normal := Vector2.from_angle(test_collision.get_angle())
+#			rotation = Vector2.from_angle(rotation).reflect(normal).angle()
 		touching_bodies.append(body)
 	touching_bodies.append_array($Area2D.get_overlapping_bodies())
 	
