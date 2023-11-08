@@ -2,7 +2,7 @@
 class_name LDTKWorld
 extends Node2D
 
-@export var level_count: int = 13
+@export var level_count: int = 15
 @export var rect: Rect2i
 
 var levels: Array[PackedScene]

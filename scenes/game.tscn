@@ -2,14 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://7l5x4jhsk0ht" path="res://characters/player.tscn" id="1_pghc2"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_v2fx5"]
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-world.gd" id="2_xxp0m"]
+[ext_resource type="PackedScene" uid="uid://cvkcnrve7bs1c" path="res://scenes/world.tscn" id="2_0gknb"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_v2fx5")
 
-[node name="World" type="Node2D" parent="."]
-script = ExtResource("2_xxp0m")
-rect = Rect2i(0, 0, 1536, 1024)
+[node name="World" parent="." instance=ExtResource("2_0gknb")]
 
 [node name="Player" parent="." instance=ExtResource("1_pghc2")]
 position = Vector2(530, 297)

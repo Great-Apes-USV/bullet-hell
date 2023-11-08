@@ -20,7 +20,6 @@ func _ready() -> void:
 				var pitfallShape: Rect2 = child.shape.get_rect()
 				pitfallShape.position += child.position
 				pitfallShapes.append(pitfallShape)
-				print(pitfallShape)
 	queue_redraw()
 
 
