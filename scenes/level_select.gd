@@ -12,6 +12,7 @@ func _process(delta):
 
 
 func button_pressed():
-	var level_name = "res://scenes/game.tscn"  # Replace with the path to your level scene
-	get_tree().change_scene(level_name)
+	var level_name = $TextureButton.get_meta("LevelName")  # Replace with the path to your level scene
+	var level = load(level_name).instantiate()
+	$/root/Game/World.add_child(level)
 	print("level loaded")

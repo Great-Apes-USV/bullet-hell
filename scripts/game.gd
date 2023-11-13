@@ -25,6 +25,8 @@ func _process(_delta):
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	if Input.is_action_just_pressed("show_menu"):
+		$LevelSelectMenu.visible = not $LevelSelectMenu.visible
 
 
 func _on_viewport_resize():
@@ -32,3 +34,4 @@ func _on_viewport_resize():
 	window_size = DisplayServer.window_get_size() / viewport_scale
 	
 	position = (window_size - $World.rect.size) / 2
+
