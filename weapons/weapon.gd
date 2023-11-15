@@ -68,7 +68,7 @@ func create_bullet() -> Bullet:
 	bullet.piercing = properties.piercing
 	bullet.ricochet = properties.ricochet
 	bullet.position = player.position - player.look_vector.normalized() * player.sprite_width / 2
-	bullet.rotation = player.player_angle.rotation
+	bullet.rotation = player.sprite_rotator.rotation
 	return bullet
 
 

@@ -32,7 +32,7 @@ var current_stamina : float = max_stamina
 var stamina_regeneration_delay_timer := Timer.new()
 
 @onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
-@onready var player_angle : Node2D = $PlayerAngle
+@onready var sprite_rotator : Node2D = $SpriteRotator
 @onready var sprite_width : float = sprite.sprite_frames.get_frame_texture("default", 0).get_width()
 
 
@@ -46,27 +46,12 @@ func _ready():
 
 
 func _process(_delta):
-	player_angle.look_at(get_global_mouse_position())
-	var sprite_angle : float = fposmod(rad_to_deg(player_angle.rotation), 360) + 22.5
-	if sprite_angle < 45:
-		sprite.frame = 0
-	elif sprite_angle >= 45 and sprite_angle < 90:
-		sprite.frame = 1
-	elif sprite_angle >= 90 and sprite_angle < 135:
-		sprite.frame = 2
-	elif sprite_angle >= 135 and sprite_angle < 180:
-		sprite.frame = 3
-	elif sprite_angle >= 180 and sprite_angle < 225:
-		sprite.frame = 4
-	elif sprite_angle >= 225 and sprite_angle < 270:
-		sprite.frame = 5
-	elif sprite_angle >= 270 and sprite_angle < 315:
-		sprite.frame = 6
-	elif sprite_angle >= 315:
-		sprite.frame = 7
+	sprite_rotator.look_at(get_global_mouse_position())
+	set_sprite_from_rotation(sprite, sprite_rotator.rotation)
+	
 	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
-	look_vector = -Vector2.from_angle(player_angle.rotation)
+	look_vector = -Vector2.from_angle(sprite_rotator.rotation)
 	
 	%TempPlayerHealthLabel.text = "%d HP" % health
 	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [current_weapon.current_ammo, current_weapon.max_ammo]
@@ -93,6 +78,9 @@ func _process(_delta):
 	
 	if autoreload and current_weapon.no_ammo:
 		reload()
+
+
+
 
 
 func _physics_process(delta):
