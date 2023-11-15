@@ -96,4 +96,4 @@ avoidance/layer_2="enemies"
 [rendering]
 
 renderer/rendering_method="mobile"
-environment/defaults/default_clear_color=Color(0.133333, 0.12549, 0.207843, 1)
+environment/defaults/default_clear_color=Color(0.133333, 0.14902, 0.168627, 1)
