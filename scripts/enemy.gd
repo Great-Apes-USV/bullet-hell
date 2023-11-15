@@ -16,6 +16,22 @@ func _init(new_player : Player = null):
 func _ready():
 	nav_agent.velocity_computed.connect(_on_velocity_computed)
 
+func drop_item():
+	var drop_rate = randi() % (100 + 1 - 1) + 1
+	if drop_rate < 21:
+		var item_select = randi() % (10 + 1 - 1) + 1
+		if item_select <= 4:
+			print("dropped regen") #drop regen
+		elif item_select == 5 or 6 or 7:
+			print("dropped overhealth") #drop overhealth
+		else:
+			print("dropped stim") #drop stim
+	else:
+		pass
+
+func die():
+	drop_item()
+	queue_free()
 
 func _physics_process(delta):
 	if player:

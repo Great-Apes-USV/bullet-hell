@@ -17,3 +17,5 @@ position = Vector2(530, 297)
 [node name="Bullets" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="."]
+
+[node name="Drops" type="Node2D" parent="."]

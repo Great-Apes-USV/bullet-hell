@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwt433th8yaqj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nel32"]
+size = Vector2(123, 34)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cry5j"]
+size = Vector2(123, 33.5)
+
+[node name="Stim" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(51.5, 7)
+shape = SubResource("RectangleShape2D_nel32")
+debug_color = Color(0.788235, 0.713726, 0.00392157, 0.419608)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(51.5, 7.25)
+shape = SubResource("RectangleShape2D_cry5j")
+debug_color = Color(0.619608, 0.584314, 0, 0.419608)
