@@ -80,9 +80,6 @@ func _process(_delta):
 		reload()
 
 
-
-
-
 func _physics_process(delta):
 	velocity = move_vector * speed if not rolling else roll_vector * roll_speed
 	move_and_slide()

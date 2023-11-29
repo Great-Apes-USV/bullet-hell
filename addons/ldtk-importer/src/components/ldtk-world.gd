@@ -2,7 +2,7 @@
 class_name LDTKWorld
 extends Node2D
 
-@export var level_count: int = 15
+@export var level_count: int = 22
 @export var rect: Rect2i
 
 var levels: Array[PackedScene]
@@ -21,12 +21,8 @@ func _enter_tree():
 
 
 func _process(_delta):
-	if Input.is_action_just_pressed("ui_right"):
-		current_level_index += 1
-		change_level()
-	if Input.is_action_just_pressed("ui_left"):
-		current_level_index -= 1
-		change_level()
+	pass
+
 
 func change_level(new_level_index : int = current_level_index):
 	current_level.queue_free()

@@ -4,6 +4,7 @@ extends Node2D
 @onready var window_size : Vector2i = DisplayServer.window_get_size() / viewport_scale
 @onready var aspect_ratio : float = float(window_size.x) / window_size.y
 @onready var gap : Vector2i
+@onready var world: DungeonWorld = $World
 
 
 func _ready():
@@ -17,6 +18,8 @@ func _ready():
 	position = (window_size - $World.rect.size) / 2
 	
 	get_viewport().size_changed.connect(_on_viewport_resize)
+	
+	$Player.position = $World.player_spawn
 
 
 func _process(_delta):
@@ -25,6 +28,19 @@ func _process(_delta):
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	if $Player.position.y <= $Player.sprite_width / 2:
+		$World.change_room(0) # DungeonWorld.Directions.UP
+		$Player.position.y = $World.rect.size.y - $Player.sprite_width
+	if $Player.position.y >= $World.rect.size.y - $Player.sprite_width / 2:
+		$World.change_room(1) # DungeonWorld.Directions.DOWN
+		$Player.position.y = $Player.sprite_width
+	if $Player.position.x <= $Player.sprite_width / 2:
+		$World.change_room(2) # DungeonWorld.Directions.LEFT
+		$Player.position.x = $World.rect.size.x - $Player.sprite_width
+	if $Player.position.x >= $World.rect.size.x - $Player.sprite_width / 2:
+		$World.change_room(3) # DungeonWorld.Directions.RIGHT
+		$Player.position.x = $Player.sprite_width
+	
 
 
 func _on_viewport_resize():
