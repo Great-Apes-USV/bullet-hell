@@ -6,10 +6,10 @@ extends Entity
 
 var player : Player
 var overhealthNode : PackedScene = preload("res://Drops/overhealth.tscn")
-var drops_node : Node2D
 var enemy : Enemy
 
 @onready var nav_agent : NavigationAgent2D = $NavigationAgent2D
+@onready var drops_node : Node2D = get_tree().root.get_node(^"/root/Game/Drops")
 
 
 func _init(new_player : Player = null):

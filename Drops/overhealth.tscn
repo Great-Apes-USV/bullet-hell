@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://digrxibp70fps"]
+[gd_scene load_steps=4 format=3 uid="uid://digrxibp70fps"]
+
+[ext_resource type="Script" path="res://Drops/overhealth.gd" id="1_ntddn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vt3fs"]
 size = Vector2(123, 34)
@@ -7,6 +9,7 @@ size = Vector2(123, 34)
 size = Vector2(123, 33.5)
 
 [node name="OverHealth" type="RigidBody2D"]
+script = ExtResource("1_ntddn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

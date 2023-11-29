@@ -1,5 +1,5 @@
 class_name Overhealth
-extends Node
+extends RigidBody2D
 
 var MAX_LIFETIME : int = 10
 
