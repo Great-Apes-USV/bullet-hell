@@ -1,10 +1,11 @@
+class_name Overhealth
 extends Node
 
 var MAX_LIFETIME : int = 10
-var drops_node : Node2D
-var overhealthNode : PackedScene = preload("res://Drops/overhealth.tscn")#this is where I left off
 
-static var overhealth_id
+
+
+static var overhealth_id : int = 0
 
 func _enter_tree():
 	name = "Overhealth_%d" % overhealth_id

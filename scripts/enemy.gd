@@ -5,6 +5,9 @@ extends Entity
 @export var damage : int = 5
 
 var player : Player
+var overhealthNode : PackedScene = preload("res://Drops/overhealth.tscn")
+var drops_node : Node2D
+var enemy : Enemy
 
 @onready var nav_agent : NavigationAgent2D = $NavigationAgent2D
 
@@ -22,8 +25,9 @@ func drop_item():
 		var item_select = randi() % (10 + 1 - 1) + 1
 		if item_select <= 4:
 			print("dropped regen") #drop regen
-		elif item_select == 5 or 6 or 7:
-			print("dropped overhealth") #drop overhealth
+		elif item_select >= 5 or item_select <= 7:
+			print("dropped overhealth") 
+			spawn_overhealth()
 		else:
 			print("dropped stim") #drop stim
 	else:
@@ -46,6 +50,16 @@ func _physics_process(delta):
 		if collision and collision.get_collider() == player:
 			player.take_damage(damage)
 			die()
+
+func create_overhealth():
+	var overhealth = overhealthNode.instantiate() as Overhealth
+	overhealth.position = position
+	return overhealth
+
+
+func spawn_overhealth():
+	var overhealth = create_overhealth()
+	drops_node.add_child(overhealth)
 
 
 func _on_velocity_computed(safe_velocity : Vector2):
