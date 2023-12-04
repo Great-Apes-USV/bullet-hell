@@ -89,10 +89,11 @@ toggle_fullscreen={
 2d_physics/layer_4="enemies"
 2d_physics/layer_5="enemy_projectiles"
 2d_physics/layer_6="pickups"
+2d_physics/layer_7="pitfalls"
 avoidance/layer_1="world"
 avoidance/layer_2="enemies"
 
 [rendering]
 
 renderer/rendering_method="mobile"
-environment/defaults/default_clear_color=Color(0.133333, 0.12549, 0.207843, 1)
+environment/defaults/default_clear_color=Color(0.133333, 0.14902, 0.168627, 1)

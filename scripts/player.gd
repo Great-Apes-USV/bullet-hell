@@ -31,7 +31,9 @@ var reloading : bool:
 var current_stamina : float = max_stamina
 var stamina_regeneration_delay_timer := Timer.new()
 
-@onready var sprite : Sprite2D = $Sprite2D
+@onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var sprite_rotator : Node2D = $SpriteRotator
+@onready var sprite_width : float = sprite.sprite_frames.get_frame_texture("default", 0).get_width()
 
 
 func _ready():
@@ -44,10 +46,12 @@ func _ready():
 
 
 func _process(_delta):
-	sprite.look_at(get_global_mouse_position())
+	sprite_rotator.look_at(get_global_mouse_position())
+	set_sprite_from_rotation(sprite, sprite_rotator.rotation)
+	
 	# respects circular deadzone
 	move_vector = Input.get_vector("move-left", "move-right", "move-up", "move-down")
-	look_vector = -Vector2.from_angle(sprite.rotation)
+	look_vector = -Vector2.from_angle(sprite_rotator.rotation)
 	
 	%TempPlayerHealthLabel.text = "%d HP" % health
 	%TempWeaponAmmoLabel.text = "%d/%d Ammo" % [current_weapon.current_ammo, current_weapon.max_ammo]

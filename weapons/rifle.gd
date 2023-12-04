@@ -10,6 +10,7 @@ func _init(new_player : Player = null, new_properties := {}):
 			max_ammo = 5,
 			reload_speed = 1,
 			piercing = true,
+			damage = 50,
 	})
 	super._init(new_player, new_properties)
 
