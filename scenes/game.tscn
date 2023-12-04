@@ -10,6 +10,16 @@ script = ExtResource("1_v2fx5")
 [node name="World" parent="." instance=ExtResource("2_0gknb")]
 
 [node name="Player" parent="." instance=ExtResource("1_pghc2")]
+roll_distance = 200.0
+roll_duration = 0.3
+autoreload = true
+cash_balance = 0
+max_stamina = 100.0
+stamina_cost = 20.0
+stamina_regeneration_rate = 10.0
+stamina_regeneration_delay = 0.5
+max_health = 100
+speed = 300.0
 
 [node name="Bullets" type="Node2D" parent="."]
 
