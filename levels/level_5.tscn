@@ -1,10 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ckp71nstndeq2"]
+[gd_scene load_steps=5 format=3 uid="uid://ckp71nstndeq2"]
 
 [ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_tetyi"]
-[ext_resource type="TileSet" uid="uid://c8vuoqc2acvlb" path="res://ldtk/tilesets/tileset64x64.res" id="2_wmhft"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fev6"]
-size = Vector2(128, 256)
+[ext_resource type="TileSet" uid="uid://bowexv724yj76" path="res://ldtk/tilesets/tileset64x64.res" id="2_wmhft"]
+[ext_resource type="Script" path="res://levels/enemy_spawner.gd" id="3_nm074"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4fev6"]
 size = Vector2(128, 256)
@@ -52,9 +50,16 @@ position = Vector2(1216, 512)
 shape = SubResource("RectangleShape2D_4fev6")
 
 [node name="EnemySpawns" type="Node2D" parent="."]
+script = ExtResource("3_nm074")
 
 [node name="Node2D" type="Node2D" parent="EnemySpawns"]
 position = Vector2(512, 384)
 
 [node name="Node2D2" type="Node2D" parent="EnemySpawns"]
 position = Vector2(1024, 384)
+
+[node name="Node2D3" type="Node2D" parent="EnemySpawns"]
+position = Vector2(512, 640)
+
+[node name="Node2D4" type="Node2D" parent="EnemySpawns"]
+position = Vector2(1024, 640)

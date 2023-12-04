@@ -35,3 +35,9 @@ func _physics_process(delta):
 
 func _on_velocity_computed(safe_velocity : Vector2):
 	velocity = safe_velocity
+
+
+func die():
+	if get_parent().get_children().size() <= 1:
+		$/root/Game/World.room_cleared()
+	super.die()

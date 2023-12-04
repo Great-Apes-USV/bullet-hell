@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://lykm05g48ltq"]
 
 [ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_8itcs"]
-[ext_resource type="TileSet" uid="uid://c8vuoqc2acvlb" path="res://ldtk/tilesets/tileset64x64.res" id="2_5i4pl"]
+[ext_resource type="TileSet" uid="uid://bowexv724yj76" path="res://ldtk/tilesets/tileset64x64.res" id="2_5i4pl"]
 
 [node name="Level_20" type="Node2D"]
 script = ExtResource("1_8itcs")
