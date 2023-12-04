@@ -36,7 +36,7 @@ func _process(_delta):
 		$Player.position.y = $Player.sprite_width + 64
 	if $Player.position.x <= $Player.sprite_width / 2:
 		$World.change_room(2) # DungeonWorld.Directions.LEFT
-		$Player.position.x = $World.rect.size.x - $Player.sprite_width - 664
+		$Player.position.x = $World.rect.size.x - $Player.sprite_width - 64
 	if $Player.position.x >= $World.rect.size.x - $Player.sprite_width / 2:
 		$World.change_room(3) # DungeonWorld.Directions.RIGHT
 		$Player.position.x = $Player.sprite_width + 64
