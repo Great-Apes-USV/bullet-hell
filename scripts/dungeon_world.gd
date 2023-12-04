@@ -29,6 +29,7 @@ func _init():
 
 func _ready():
 	change_level(layout[room_pos.y][room_pos.x][0])
+	room_cleared()
 
 
 func _process(delta):
@@ -78,3 +79,8 @@ func change_room(direction: Directions):
 
 func room_cleared():
 	layout[room_pos.y][room_pos.x][1] = true
+	for level in get_children():
+		if "Level_" in level.name:
+			var gates = level.find_child("Gates")
+			if gates:
+				gates.queue_free()

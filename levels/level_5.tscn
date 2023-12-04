@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_tetyi"]
 [ext_resource type="TileSet" uid="uid://bowexv724yj76" path="res://ldtk/tilesets/tileset64x64.res" id="2_wmhft"]
-[ext_resource type="Script" path="res://levels/enemy_spawner.gd" id="3_nm074"]
+[ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="3_nm074"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4fev6"]
 size = Vector2(128, 256)
