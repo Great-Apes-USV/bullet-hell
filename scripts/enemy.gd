@@ -19,7 +19,8 @@ func _ready():
 
 func _physics_process(delta):
 	if player:
-		look_at(player.global_position)
+		$SpriteRotator.look_at(player.global_position)
+		set_sprite_from_rotation($AnimatedSprite2D, $SpriteRotator.rotation)
 		nav_agent.target_position = player.global_position
 		var current_location : Vector2 = global_position
 		var next_location : Vector2 = nav_agent.get_next_path_position()
