@@ -9,5 +9,5 @@ func spawn_all():
 func spawn_enemy(enemy_position: Vector2):
 	var enemy = preload("res://characters/enemy.tscn").instantiate()
 	enemy.position = enemy_position
-	enemy.player = $/root/Game/Player # hardcoded, pls fix
-	$/root/Game/Enemies.add_child(enemy) # hardcoded, pls fix
+	enemy.player = GameHandler.player
+	GameHandler.enemies.add_child(enemy)

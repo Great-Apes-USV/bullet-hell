@@ -3,82 +3,72 @@ extends LDTKWorld
 
 enum Directions {UP=0, DOWN=1, LEFT=2, RIGHT=3}
 
-# ATTN: this will be a 3d array, with each "level" location being an array with its level id [0]
-# and a cleared level flag [1]
-var layout : Array[Array] = [
-	[9, 15, 22],
-	[9, 18, 8],
-	[-1, 11, 16],
-	[-1, 17, 19],
-	[-1, 21, -1]
-]
+var dungeon_layout: PackedInt32Array = [9, 15, 22, 9, 18, 8, -1, 11, 16, -1, 17, 19, -1, 21, -1]
+var room_cleared_status: PackedByteArray
 
-var room_pos := Vector2i(0, 0)
+var current_room_position := Vector2i(0, 0)
 var dungeon_dimensions := Vector2i(3, 5)
 var player_spawn := Vector2i(768, 512)
 
 
 func _init():
-	var y_size: int = layout.size()
-	var x_size: int = layout[0].size()
-	for y in range(y_size):
-		for x in range(x_size):
-			layout[y][x] = [layout[y][x], false]
-	layout[0][0][1] = true
+	for i in range(dungeon_layout.size()):
+		room_cleared_status.append(0)
+	room_cleared_status[0] = true
 
 
 func _ready():
-	change_level(layout[room_pos.y][room_pos.x][0])
-	room_cleared()
+	change_level(dungeon_layout[get_room_index()])
+	clear_room()
 
 
-func _process(delta):
-	pass
+func get_room_index(level_room_pos: Vector2i = current_room_position) -> int:
+	return level_room_pos.y * dungeon_dimensions.x + level_room_pos.x
 
 
-func get_level(level_room_pos: Vector2i = room_pos) -> int:
-	return layout[level_room_pos.y][level_room_pos.x][0]
+func get_room_id(level_room_pos: Vector2i = current_room_position) -> int:
+	return dungeon_layout[get_room_index(level_room_pos)]
 
 
-func get_level_cleared(level_room_pos: Vector2i = room_pos) -> bool:
-	return layout[level_room_pos.y][level_room_pos.x][1]
+func get_room_cleared(level_room_pos: Vector2i = current_room_position) -> bool:
+	return room_cleared_status[get_room_index(level_room_pos)]
 
 
-func update_room(level_room_pos: Vector2i = room_pos):
-	var level: LDTKLevel = change_level(get_level(level_room_pos))
-	if get_level_cleared() == false:
+func update_room(level_room_pos: Vector2i = current_room_position):
+	var level: LDTKLevel = change_level(get_room_id(level_room_pos))
+	if get_room_cleared() == false:
 		var enemy_spawns = level.find_child("EnemySpawns")
 		if enemy_spawns:
 			enemy_spawns.spawn_all()
-	if $/root/Game/Enemies.get_children().size() <= 0:
-		room_cleared()
+	if GameHandler.enemies.get_children().size() <= 0:
+		clear_room()
 
 
 func change_room(direction: Directions):
-	if not get_level_cleared():
+	if not get_room_cleared():
 		return
 	match direction:
 		Directions.UP:
-			room_pos.y -= 1
-			if room_pos.y < 0 or get_level() == -1:
-				room_pos.y += 1
+			current_room_position.y -= 1
+			if current_room_position.y < 0 or get_room_id() == -1:
+				current_room_position.y += 1
 		Directions.DOWN:
-			room_pos.y += 1
-			if room_pos.y >= dungeon_dimensions.y or get_level() == -1:
-				room_pos.y -= 1
+			current_room_position.y += 1
+			if current_room_position.y >= dungeon_dimensions.y or get_room_id() == -1:
+				current_room_position.y -= 1
 		Directions.LEFT:
-			room_pos.x -= 1
-			if room_pos.x < 0 or get_level() == -1:
-				room_pos.x += 1
+			current_room_position.x -= 1
+			if current_room_position.x < 0 or get_room_id() == -1:
+				current_room_position.x += 1
 		Directions.RIGHT:
-			room_pos.x += 1
-			if room_pos.x >= dungeon_dimensions.x or get_level() == -1:
-				room_pos.x -= 1
+			current_room_position.x += 1
+			if current_room_position.x >= dungeon_dimensions.x or get_room_id() == -1:
+				current_room_position.x -= 1
 	update_room()
 
 
-func room_cleared():
-	layout[room_pos.y][room_pos.x][1] = true
+func clear_room():
+	room_cleared_status[get_room_index()] = 1
 	for level in get_children():
 		if "Level_" in level.name:
 			var gates = level.find_child("Gates")

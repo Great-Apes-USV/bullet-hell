@@ -38,6 +38,6 @@ func _on_velocity_computed(safe_velocity : Vector2):
 
 
 func die():
-	if get_parent().get_children().size() <= 1:
-		$/root/Game/World.room_cleared()
+	if GameHandler.enemies.get_children().size() <= 1:
+		GameHandler.world.clear_room()
 	super.die()

@@ -155,9 +155,9 @@ func change_balance(amount : int) -> bool:
 
 func debug_spawn_enemy():
 	var enemy = preload("res://characters/enemy.tscn").instantiate()
-	enemy.position = get_global_mouse_position() - (Vector2($/root/Game.gap) / 2)
+	enemy.position = get_global_mouse_position() - (Vector2(GameHandler.game.gap) / 2)
 	enemy.player = self
-	$/root/Game/Enemies.add_child(enemy)
+	GameHandler.enemies.add_child(enemy)
 
 func regenerate_stamina(delta: float):
 	if just_rolled:
