@@ -23,6 +23,12 @@ func _process(_delta):
 
 
 func change_level(new_level_index : int = current_level_index) -> LDTKLevel:
+	if GameHandler.bullets:
+		for bullet in GameHandler.bullets.get_children():
+			bullet.queue_free()
+	if GameHandler.enemies:
+		for enemy in GameHandler.enemies.get_children():
+			enemy.queue_free()
 	current_level.queue_free()
 	current_level = levels[new_level_index].instantiate()
 	add_child(current_level)

@@ -35,16 +35,16 @@ func _process(_delta):
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	if player.position.y <= player.sprite_width / 2:
-		world.change_room(0) # DungeonWorld.Directions.UP
+		world.change_room(DungeonWorld.Directions.UP)
 		player.position.y = world.rect.size.y - player.sprite_width - 64
 	if player.position.y >= world.rect.size.y - player.sprite_width / 2:
-		world.change_room(1) # DungeonWorld.Directions.DOWN
+		world.change_room(DungeonWorld.Directions.DOWN)
 		player.position.y = player.sprite_width + 64
 	if player.position.x <= player.sprite_width / 2:
-		world.change_room(2) # DungeonWorld.Directions.LEFT
+		world.change_room(DungeonWorld.Directions.LEFT)
 		player.position.x = world.rect.size.x - player.sprite_width - 64
 	if player.position.x >= world.rect.size.x - player.sprite_width / 2:
-		world.change_room(3) # DungeonWorld.Directions.RIGHT
+		world.change_room(DungeonWorld.Directions.RIGHT)
 		player.position.x = player.sprite_width + 64
 	
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_o0g6r"]
 [ext_resource type="StyleBox" uid="uid://fmv7fmrb362a" path="res://art/style/label_background_stylebox.tres" id="3_sew8o"]
-[ext_resource type="SpriteFrames" uid="uid://dij8ijrc2vmt7" path="res://art/sprites/player_sprite_frames.tres" id="4_7plob"]
+[ext_resource type="SpriteFrames" uid="uid://dwrn6mqyk3vo3" path="res://art/sprites/player_sprite_frames.tres" id="4_7plob"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_debrt"]
 radius = 32.0
