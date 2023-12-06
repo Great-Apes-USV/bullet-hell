@@ -73,8 +73,8 @@ func _process(_delta):
 	if Input.is_action_just_pressed("weapon-swap"):
 		swap_weapon()
 	
-	if Input.is_action_just_pressed("debug-spawn-enemy"):
-		debug_spawn_enemy()
+#	if Input.is_action_just_pressed("debug-spawn-enemy"):
+#		debug_spawn_enemy()
 	
 	if autoreload and current_weapon.no_ammo:
 		reload()
