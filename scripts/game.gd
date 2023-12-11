@@ -14,6 +14,7 @@ func _ready():
 	GameHandler.player = player
 	GameHandler.enemies = $Enemies
 	GameHandler.bullets = $Bullets
+	GameHandler.start_window_size = window_size
 	var diff : Vector2i = window_size - world.rect.size
 	if diff.x > diff.y:
 		window_size *= float(world.rect.size.x) / window_size.x
@@ -46,7 +47,6 @@ func _process(_delta):
 	if player.position.x >= world.rect.size.x - player.sprite_width / 2:
 		world.change_room(DungeonWorld.Directions.RIGHT)
 		player.position.x = player.sprite_width + 64
-	
 
 
 func _on_viewport_resize():

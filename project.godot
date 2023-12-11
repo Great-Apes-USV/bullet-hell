@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="bullet-hell"
-run/main_scene="res://scenes/game.tscn"
+run/main_scene="res://scenes/menu.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Weapons="*res://weapons/weapons_handler.gd"
 GameHandler="*res://scripts/game_handler.gd"
+GameUI="*res://scenes/game_ui.tscn"
 
 [display]
 
